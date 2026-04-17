@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Steam & Story – A premium café experience. Artisanal coffee, handcrafted beverages and unforgettable flavors in Hyderabad.">
+  <meta name="keywords" content="premium café, artisan coffee, Steam & Story, specialty drinks, cold brew, café Hyderabad">
+  <meta name="author" content="Steam & Story">
+  <meta property="og:title" content="Steam & Story – Premium Café Experience">
+  <meta property="og:description" content="Artisanal coffee crafted with love. Order online and experience the difference.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#3b1f0a">
+  <title>Steam & Story | Premium Café</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+/* ============================================================
+   STEAM & STORY — Premium Café CSS
+   01. CSS Variables & Reset
+   02. Typography & Base
+   03. Utilities
+   04. Navigation
+   05. Hero Section
+   06. Menu Section
+   07. About & Footer
+   08. Cart Sidebar
+   09. Checkout Modal
+   10. Waiting Screen
+   11. Admin View
+   12. Toasts & Notifications
+   13. Animations
+   14. Responsive
+   15. Admin Dot Trigger
+============================================================ */
+
+/* ── 01. CSS Variables & Reset ──────────────────────────── */
+:root {
+  --c-espresso:   #1c0a02;
+  --c-roast:      #2e1503;
+  --c-dark:       #3b1f0a;
+  --c-brown:      #6b3f24;
+  --c-mid:        #9b6245;
+  --c-warm:       #b8845a;
+  --c-tan:        #c9a87a;
+  --c-sand:       #dfc49a;
+  --c-cream:      #f5eddd;
+  --c-ivory:      #faf6ef;
+  --c-white:      #ffffff;
+  --c-gold:       #c9963a;
+  --c-gold-lt:    #e8b45a;
+  --c-gold-pale:  #f5e4bb;
+  --c-success:    #2d7a4f;
+  --c-danger:     #b03030;
+
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-2xl: 40px;
+
+  --sh-xs:  0 1px 4px rgba(28,10,2,.06);
+  --sh-sm:  0 2px 12px rgba(28,10,2,.09);
+  --sh-md:  0 6px 24px rgba(28,10,2,.13);
+  --sh-lg:  0 16px 48px rgba(28,10,2,.18);
+  --sh-xl:  0 32px 80px rgba(28,10,2,.22);
+  --sh-gold: 0 8px 28px rgba(201,150,58,.3);
+
+  --ease:       cubic-bezier(.4,0,.2,1);
+  --ease-out:   cubic-bezier(0,0,.2,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --t-fast:  .15s;
+  --t-base:  .28s;
+  --t-slow:  .5s;
+
+  --nav-h: 70px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--c-ivory);
+  color: var(--c-espresso);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+input, select { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ── 02. Typography ─────────────────────────────────────── */
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; }
+h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; }
+h3 { font-size: 1.4rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 600; }
+em { font-style: italic; color: var(--c-gold); }
+p { color: var(--c-brown); }
+
+/* ── 03. Utilities ──────────────────────────────────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.hidden { display: none !important; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--c-espresso);
+  color: var(--c-cream);
+  padding: 14px 28px;
+  border-radius: var(--r-xl);
+  font-size: .95rem; font-weight: 600; letter-spacing: .02em;
+  transition: all var(--t-base) var(--ease);
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 16px rgba(28,10,2,.25);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,.07);
+  transform: translateX(-100%);
+  transition: transform var(--t-base) var(--ease);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--sh-lg); }
+.btn-primary:hover::after { transform: translateX(0); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--c-espresso);
+  padding: 14px 28px;
+  border-radius: var(--r-xl);
+  font-size: .95rem; font-weight: 500;
+  border: 1.5px solid rgba(28,10,2,.2);
+  transition: all var(--t-base) var(--ease);
+}
+.btn-ghost:hover { background: rgba(28,10,2,.05); border-color: var(--c-espresso); }
+
+.btn-sm {
+  padding: 8px 18px; border-radius: var(--r-md);
+  background: var(--c-cream); color: var(--c-brown);
+  font-size: .85rem; font-weight: 500;
+  border: 1px solid var(--c-sand);
+  transition: all var(--t-fast) var(--ease);
+}
+.btn-sm:hover { background: var(--c-sand); }
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-brown); transition: all var(--t-fast) var(--ease);
+}
+.icon-btn:hover { background: var(--c-cream); color: var(--c-espresso); }
+
+.full-w { width: 100%; justify-content: center; }
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: .78rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--c-gold); margin-bottom: 12px;
+}
+.section-head { text-align: center; margin-bottom: 48px; }
+.section-title { color: var(--c-espresso); margin-bottom: 14px; }
+.section-sub { color: var(--c-mid); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+/* ── 04. Navigation ─────────────────────────────────────── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h); z-index: 900;
+  background: rgba(250,246,239,.92);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 1px solid rgba(201,150,58,.12);
+  transition: box-shadow var(--t-base) var(--ease);
+}
+#navbar.scrolled { box-shadow: var(--sh-md); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  height: 100%; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark { font-size: 1.4rem; }
+.logo-main {
+  font-family: var(--font-display);
+  font-size: 1.2rem; font-weight: 700;
+  color: var(--c-espresso); letter-spacing: -.01em;
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-size: .88rem; font-weight: 500; color: var(--c-brown);
+  position: relative; padding-bottom: 2px;
+  transition: color var(--t-fast) var(--ease);
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 100%;
+  height: 1.5px; background: var(--c-gold);
+  transition: right var(--t-base) var(--ease);
+}
+.nav-links a:hover { color: var(--c-espresso); }
+.nav-links a:hover::after { right: 0; }
+.nav-cart-btn {
+  position: relative; width: 42px; height: 42px;
+  border-radius: 50%; background: var(--c-espresso);
+  color: var(--c-cream); display: flex; align-items: center; justify-content: center;
+  transition: all var(--t-base) var(--ease-spring);
+}
+.nav-cart-btn:hover { transform: scale(1.1); box-shadow: var(--sh-md); }
+.cart-count-badge {
+  position: absolute; top: -4px; right: -4px;
+  min-width: 18px; height: 18px; border-radius: 9px;
+  background: var(--c-gold); color: white;
+  font-size: .68rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 4px; border: 2px solid var(--c-ivory);
+  transition: transform var(--t-base) var(--ease-spring);
+}
+.cart-count-badge.bump { animation: badgeBump .3s var(--ease-spring); }
+
+/* ── 05. Hero Section ───────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  padding: calc(var(--nav-h) + 40px) 24px 80px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--c-ivory) 0%, #f0e6ce 60%, #e8d8b8 100%);
+}
+.hero-bg { position: absolute; inset: 0; pointer-events: none; }
+.hero-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(60px); opacity: .5;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,150,58,.25), transparent 70%);
+  top: -100px; right: -100px;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(107,63,36,.18), transparent 70%);
+  bottom: 50px; left: -80px;
+  animation: orbFloat 10s ease-in-out infinite reverse;
+}
+.orb-3 {
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(201,150,58,.15), transparent 70%);
+  top: 50%; left: 40%;
+  animation: orbFloat 12s ease-in-out infinite 2s;
+}
+.hero-grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+#hero > .hero-content, #hero > .hero-visual {
+  position: relative; z-index: 2;
+}
+#hero { gap: 60px; flex-wrap: wrap; }
+.hero-content { flex: 1; min-width: 300px; max-width: 560px; }
+.hero-eyebrow {
+  font-size: .78rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--c-gold); margin-bottom: 16px; display: block;
+  animation: fadeUp .8s var(--ease-out) both;
+}
+.hero-title { margin-bottom: 20px; color: var(--c-espresso); animation: fadeUp .8s var(--ease-out) .1s both; }
+.hero-title em { display: block; }
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--c-mid); line-height: 1.7;
+  margin-bottom: 36px; max-width: 420px;
+  animation: fadeUp .8s var(--ease-out) .2s both;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; animation: fadeUp .8s var(--ease-out) .3s both; }
+.hero-stats { display: flex; align-items: center; gap: 24px; animation: fadeUp .8s var(--ease-out) .4s both; }
+.hero-stat { display: flex; flex-direction: column; gap: 2px; }
+.stat-n { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--c-espresso); }
+.stat-l { font-size: .75rem; font-weight: 500; color: var(--c-mid); letter-spacing: .04em; }
+.stat-sep { width: 1px; height: 36px; background: var(--c-sand); }
+
+/* CSS Coffee Cup */
+.hero-visual { flex: 0 0 auto; display: flex; justify-content: center; align-items: center; animation: fadeIn 1s var(--ease-out) .3s both; }
+.cup-scene { position: relative; width: 200px; height: 240px; }
+.cup-body {
+  width: 160px; height: 140px;
+  background: linear-gradient(145deg, var(--c-espresso), #0f0501);
+  border-radius: 12px 12px 40px 40px;
+  position: absolute; bottom: 60px; left: 20px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; overflow: hidden;
+  box-shadow: var(--sh-xl), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.cup-liquid {
+  width: 130px; height: 80px;
+  background: linear-gradient(160deg, #6b3010 0%, #3b1808 50%, #1c0a02 100%);
+  border-radius: 6px 6px 30px 30px;
+  position: relative; overflow: hidden;
+}
+.liquid-shine { position: absolute; top: 6px; left: 10px; width: 50px; height: 8px; background: rgba(255,255,255,.08); border-radius: 4px; }
+.cup-logo { font-family: var(--font-display); font-size: .75rem; color: rgba(255,255,255,.15); margin-top: 8px; font-weight: 700; }
+.cup-handle {
+  width: 34px; height: 60px;
+  border: 6px solid var(--c-espresso);
+  border-radius: 0 30px 30px 0; border-left: none;
+  position: absolute; right: 0; bottom: 88px;
+  box-shadow: 2px 4px 12px rgba(28,10,2,.3);
+}
+.cup-saucer {
+  width: 180px; height: 16px;
+  background: linear-gradient(180deg, var(--c-tan) 0%, var(--c-sand) 100%);
+  border-radius: 50%; position: absolute; bottom: 40px; left: 10px;
+  box-shadow: 0 6px 20px rgba(28,10,2,.2);
+}
+.cup-steam { position: absolute; bottom: 180px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; }
+.steam-line { width: 3px; height: 30px; background: linear-gradient(0deg, transparent, rgba(201,150,58,.5), transparent); border-radius: 2px; opacity: 0; }
+.sl1 { animation: steamRise 2.5s ease-in-out infinite .0s; }
+.sl2 { animation: steamRise 2.5s ease-in-out infinite .6s; }
+.sl3 { animation: steamRise 2.5s ease-in-out infinite 1.2s; }
+.cup-glow {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 160px; height: 40px;
+  background: radial-gradient(ellipse, rgba(201,150,58,.3), transparent 70%);
+  filter: blur(10px);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Shop Status Banner */
+.shop-banner {
+  position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 800;
+  padding: 10px 24px; text-align: center;
+  font-size: .88rem; font-weight: 600;
+  animation: slideDown .3s var(--ease-out);
+}
+.shop-banner.closed { background: var(--c-danger); color: white; }
+.shop-banner.break  { background: var(--c-gold);   color: var(--c-espresso); }
+
+/* ── 06. Menu Section ───────────────────────────────────── */
+#menu { padding: 100px 0; background: var(--c-white); }
+.category-scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-bottom: 48px; }
+.category-scroller::-webkit-scrollbar { display: none; }
+.category-tabs { display: flex; gap: 10px; width: max-content; padding: 0 24px; margin: 0 auto; }
+.cat-tab {
+  padding: 10px 22px; border-radius: var(--r-xl);
+  font-size: .85rem; font-weight: 600;
+  color: var(--c-mid); background: var(--c-cream);
+  border: 1.5px solid var(--c-sand); white-space: nowrap;
+  transition: all var(--t-fast) var(--ease);
+}
+.cat-tab:hover { color: var(--c-espresso); border-color: var(--c-tan); background: var(--c-gold-pale); }
+.cat-tab.active { background: var(--c-espresso); color: var(--c-cream); border-color: var(--c-espresso); box-shadow: var(--sh-md); }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 24px; max-width: 1200px; margin: 0 auto; }
+
+/* Menu Card */
+.menu-card {
+  background: var(--c-ivory); border-radius: var(--r-lg); padding: 16px;
+  display: flex; gap: 16px; align-items: center;
+  border: 1px solid var(--c-cream);
+  transition: all var(--t-base) var(--ease);
+  position: relative; overflow: hidden;
+}
+.menu-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: var(--r-lg);
+  background: linear-gradient(135deg, rgba(201,150,58,.04), transparent);
+  opacity: 0; transition: opacity var(--t-base) var(--ease);
+  pointer-events: none;
+}
+.menu-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); border-color: var(--c-sand); }
+.menu-card:hover::before { opacity: 1; }
+.menu-card.out-of-stock { opacity: .5; pointer-events: none; }
+.menu-card.out-of-stock::after {
+  content: 'Out of Stock'; position: absolute; top: 10px; right: 10px;
+  background: var(--c-danger); color: white;
+  font-size: .7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: .04em;
+}
+.card-img { width: 88px; height: 88px; border-radius: var(--r-md); object-fit: cover; flex-shrink: 0; background: var(--c-cream); transition: transform var(--t-base) var(--ease); }
+.menu-card:hover .card-img { transform: scale(1.05); }
+.card-img-placeholder {
+  width: 88px; height: 88px; border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--c-gold-pale), var(--c-cream));
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem;
+}
+.card-body { flex: 1; min-width: 0; }
+.card-name { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--c-espresso); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-desc { font-size: .78rem; color: var(--c-mid); margin-bottom: 12px; line-height: 1.4; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card-price { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--c-espresso); }
+.card-price span { font-size: .75rem; font-weight: 400; color: var(--c-mid); }
+.qty-control { display: flex; align-items: center; gap: 0; background: var(--c-cream); border-radius: 24px; border: 1.5px solid var(--c-sand); overflow: hidden; }
+.qty-btn { width: 30px; height: 30px; border-radius: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 500; color: var(--c-brown); transition: all var(--t-fast) var(--ease); line-height: 1; }
+.qty-btn:hover { background: var(--c-gold-pale); color: var(--c-espresso); }
+.qty-num { min-width: 28px; text-align: center; font-size: .88rem; font-weight: 600; color: var(--c-espresso); }
+.add-btn {
+  padding: 6px 18px; border-radius: 20px;
+  background: var(--c-white); color: var(--c-espresso);
+  border: 1.5px solid var(--c-espresso);
+  font-size: .8rem; font-weight: 700; letter-spacing: .04em;
+  transition: all var(--t-fast) var(--ease);
+}
+.add-btn:hover { background: var(--c-espresso); color: var(--c-cream); }
+.card-cart-ctrl { display: flex; align-items: center; }
+.wa-customer-btn {
+  padding: 6px 12px; border-radius: var(--r-md);
+  background: #25D366; color: white;
+  font-size: .78rem; font-weight: 600;
+  transition: all var(--t-fast) var(--ease);
+}
+
+/* ── 07. About & Footer ─────────────────────────────────── */
+#about { padding: 100px 0; background: linear-gradient(180deg, var(--c-cream) 0%, var(--c-ivory) 100%); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.about-text h2 { margin-bottom: 20px; }
+.about-text p { color: var(--c-mid); margin-bottom: 16px; line-height: 1.75; }
+.about-pillars { display: flex; flex-direction: column; gap: 20px; }
+.pillar-card {
+  background: var(--c-white); border-radius: var(--r-lg); padding: 24px;
+  border: 1px solid var(--c-cream); display: flex; gap: 16px; align-items: flex-start;
+  transition: all var(--t-base) var(--ease);
+}
+.pillar-card:hover { transform: translateX(6px); box-shadow: var(--sh-sm); border-color: var(--c-sand); }
+.pillar-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+.pillar-card h4 { color: var(--c-espresso); margin-bottom: 6px; }
+.pillar-card p { color: var(--c-mid); font-size: .88rem; }
+
+#footer { background: var(--c-espresso); padding: 40px 24px; }
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center;
+}
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.footer-logo { font-family: var(--font-display); font-size: 1.2rem; color: var(--c-cream); font-weight: 700; }
+.footer-brand p { color: var(--c-tan); font-size: .85rem; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: var(--c-tan); font-size: .85rem; transition: color var(--t-fast) var(--ease); }
+.footer-links a:hover { color: var(--c-gold-lt); }
+.footer-copy { color: rgba(201,168,122,.4); font-size: .75rem; }
+.footer-contact { display: flex; flex-direction: column; gap: 5px; }
+.footer-contact p { color: var(--c-tan); font-size: .82rem; margin: 0; }
+
+/* ── 08. Cart Sidebar ───────────────────────────────────── */
+.cart-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(28,10,2,.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all var(--t-base) var(--ease); }
+.cart-overlay.open { opacity: 1; visibility: visible; }
+.cart-sidebar {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(420px, 100vw); z-index: 1001;
+  background: var(--c-ivory);
+  transform: translateX(100%);
+  transition: transform var(--t-base) var(--ease);
+  display: flex; flex-direction: column;
+  box-shadow: var(--sh-xl);
+}
+.cart-sidebar.open { transform: translateX(0); }
+.cart-head { padding: 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--c-cream); background: var(--c-white); }
+.cart-head h3 { color: var(--c-espresso); }
+.cart-subtitle { font-size: .82rem; color: var(--c-mid); margin-top: 2px; }
+.cart-body { flex: 1; overflow-y: auto; padding: 16px; }
+.cart-body::-webkit-scrollbar { width: 4px; }
+.cart-body::-webkit-scrollbar-track { background: transparent; }
+.cart-body::-webkit-scrollbar-thumb { background: var(--c-sand); border-radius: 2px; }
+.cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; height: 100%; text-align: center; padding: 40px; }
+.empty-cup { font-size: 3rem; opacity: .4; }
+.cart-empty p { color: var(--c-mid); font-weight: 500; }
+.cart-empty small { color: var(--c-tan); font-size: .82rem; }
+.cart-items-list { display: flex; flex-direction: column; gap: 12px; }
+.cart-item { background: var(--c-white); border-radius: var(--r-md); padding: 14px; display: flex; gap: 12px; align-items: center; border: 1px solid var(--c-cream); animation: slideIn .25s var(--ease-out); }
+.cart-item-img { width: 52px; height: 52px; border-radius: var(--r-sm); object-fit: cover; flex-shrink: 0; background: var(--c-cream); }
+.cart-item-thumb { width: 52px; height: 52px; border-radius: var(--r-sm); background: linear-gradient(135deg, var(--c-gold-pale), var(--c-cream)); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-weight: 600; font-size: .88rem; color: var(--c-espresso); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-price { font-size: .82rem; color: var(--c-gold); font-weight: 600; margin-top: 2px; }
+.cart-item-controls { display: flex; align-items: center; gap: 4px; background: var(--c-cream); border-radius: 20px; padding: 2px; border: 1px solid var(--c-sand); }
+.ci-btn { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--c-brown); transition: all var(--t-fast) var(--ease); }
+.ci-btn:hover { background: var(--c-gold-pale); color: var(--c-espresso); }
+.ci-num { min-width: 22px; text-align: center; font-size: .82rem; font-weight: 600; }
+.cart-foot { padding: 20px 24px; border-top: 1px solid var(--c-cream); background: var(--c-white); }
+.cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 600; font-size: 1rem; }
+#cartSubtotal { font-family: var(--font-display); font-size: 1.2rem; color: var(--c-gold); }
+.cart-fab {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--c-espresso); color: var(--c-cream);
+  border-radius: var(--r-xl); z-index: 800; padding: 14px 20px;
+  display: flex; align-items: center; gap: 10px; box-shadow: var(--sh-lg);
+  transition: all var(--t-base) var(--ease-spring);
+}
+.cart-fab:hover { transform: scale(1.05) translateY(-2px); box-shadow: var(--sh-xl); }
+.cart-fab span:first-of-type { min-width: 20px; height: 20px; border-radius: 10px; background: var(--c-gold); font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+.fab-price { font-weight: 600; font-size: .9rem; }
+
+/* ── 09. Checkout Modal ─────────────────────────────────── */
+.modal-overlay { position: fixed; inset: 0; z-index: 1100; background: rgba(28,10,2,.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn .2s var(--ease-out); }
+.modal { background: var(--c-white); border-radius: var(--r-xl); padding: 36px; width: 100%; max-width: 480px; position: relative; box-shadow: var(--sh-xl); animation: modalIn .35s var(--ease-spring); }
+.modal-close { position: absolute; top: 18px; right: 18px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--c-mid); transition: all var(--t-fast) var(--ease); }
+.modal-close:hover { background: var(--c-cream); color: var(--c-espresso); }
+.modal-header { margin-bottom: 24px; }
+.modal-header h3 { color: var(--c-espresso); margin-bottom: 6px; }
+.modal-header p { color: var(--c-mid); font-size: .88rem; }
+.order-summary-preview { background: var(--c-ivory); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 16px; max-height: 160px; overflow-y: auto; }
+.preview-item { display: flex; justify-content: space-between; font-size: .85rem; color: var(--c-brown); padding: 3px 0; }
+.preview-item strong { color: var(--c-espresso); }
+.prep-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--c-gold-pale); color: var(--c-roast); border-radius: var(--r-xl); padding: 8px 16px; font-size: .82rem; font-weight: 600; margin-bottom: 20px; border: 1px solid var(--c-sand); }
+.checkout-form { display: flex; flex-direction: column; gap: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: .82rem; font-weight: 600; color: var(--c-brown); letter-spacing: .03em; }
+.form-field input, .form-field select { padding: 12px 16px; border-radius: var(--r-md); border: 1.5px solid var(--c-sand); background: var(--c-ivory); font-size: .95rem; color: var(--c-espresso); transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease); outline: none; }
+.form-field input:focus { border-color: var(--c-gold); box-shadow: 0 0 0 3px rgba(201,150,58,.12); }
+.form-field input.error { border-color: var(--c-danger); }
+.field-error { font-size: .75rem; color: var(--c-danger); min-height: 14px; }
+.place-btn { margin-top: 8px; font-size: 1rem; padding: 16px; }
+
+/* ── 10. Waiting Screen ─────────────────────────────────── */
+.waiting-screen {
+  position: fixed; inset: 0; z-index: 1200;
+  background: linear-gradient(145deg, var(--c-espresso) 0%, #0f0501 60%, var(--c-roast) 100%);
+  overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 20px; animation: fadeIn .4s var(--ease-out);
+}
+.waiting-content { width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 20px 0 60px; }
+.waiting-top { text-align: center; }
+.confirmed-badge { display: inline-block; background: rgba(45,122,79,.25); color: #6ee7a0; border: 1px solid rgba(110,231,160,.3); padding: 6px 18px; border-radius: var(--r-xl); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 16px; }
+.pulse-anim { animation: pulseBadge 2s ease-in-out infinite; }
+.waiting-greeting { color: var(--c-cream); font-size: clamp(1.5rem, 4vw, 2.2rem); margin-bottom: 8px; }
+.waiting-order-ref { color: var(--c-tan); font-size: .82rem; }
+/* Countdown Ring */
+.countdown-wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.countdown-ring-wrap { position: relative; width: 160px; height: 160px; }
+.countdown-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 8; }
+.ring-fill { fill: none; stroke: var(--c-gold); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 427; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+.countdown-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.countdown-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--c-cream); }
+.countdown-unit { font-size: .72rem; color: var(--c-tan); letter-spacing: .05em; }
+.prep-range-text { color: var(--c-gold-lt); font-size: .85rem; font-weight: 500; }
+.status-label { color: var(--c-tan); font-size: .9rem; }
+.multi-note { background: rgba(201,150,58,.15); border: 1px solid rgba(201,150,58,.3); color: var(--c-gold-lt); border-radius: var(--r-md); padding: 12px 20px; font-size: .85rem; font-weight: 500; text-align: center; }
+/* Entertainment */
+.ent-section { width: 100%; }
+.ent-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255,255,255,.06); padding: 4px; border-radius: var(--r-xl); }
+.ent-tab { flex: 1; padding: 9px 12px; border-radius: var(--r-xl); font-size: .78rem; font-weight: 600; color: var(--c-tan); transition: all var(--t-fast) var(--ease); }
+.ent-tab.active { background: var(--c-gold); color: var(--c-espresso); }
+.ent-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-lg); padding: 24px; text-align: center; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: all var(--t-base) var(--ease); animation: fadeIn .4s var(--ease-out); }
+.ent-text { color: var(--c-cream); font-size: 1rem; line-height: 1.6; font-style: italic; }
+.ent-meta { color: var(--c-tan); font-size: .75rem; font-weight: 500; letter-spacing: .04em; }
+.waiting-recap { width: 100%; background: rgba(255,255,255,.06); border-radius: var(--r-lg); padding: 20px; border: 1px solid rgba(255,255,255,.08); }
+.recap-title { color: var(--c-tan); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+.recap-item { display: flex; justify-content: space-between; color: var(--c-cream); font-size: .88rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.recap-item:last-child { border: none; }
+.recap-total { display: flex; justify-content: space-between; color: var(--c-gold-lt); font-weight: 600; padding-top: 10px; margin-top: 4px; font-size: .92rem; }
+/* Ready Toast */
+.ready-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--c-white); border-radius: var(--r-lg); padding: 16px 20px; z-index: 2000; box-shadow: var(--sh-xl); display: flex; align-items: center; gap: 12px; border: 1px solid var(--c-cream); animation: toastIn .4s var(--ease-spring); min-width: 280px; }
+.toast-body { display: flex; align-items: center; gap: 12px; flex: 1; }
+.toast-emoji { font-size: 1.8rem; }
+.toast-body strong { color: var(--c-espresso); font-size: .95rem; }
+.toast-body p { color: var(--c-mid); font-size: .8rem; }
+.toast-close-btn { color: var(--c-mid); font-size: 1rem; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all var(--t-fast) var(--ease); }
+.toast-close-btn:hover { background: var(--c-cream); }
+
+/* ── 11. Admin View ─────────────────────────────────────── */
+.admin-login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(145deg, var(--c-espresso) 0%, #0f0501 100%); }
+.admin-login-card { background: var(--c-white); border-radius: var(--r-xl); padding: 40px; width: 100%; max-width: 400px; box-shadow: var(--sh-xl); animation: modalIn .4s var(--ease-spring); }
+.admin-brand { text-align: center; margin-bottom: 32px; }
+.admin-brand-icon { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+.admin-brand h2 { color: var(--c-espresso); font-size: 1.8rem; margin-bottom: 4px; }
+.admin-brand p { color: var(--c-mid); font-size: .85rem; }
+.admin-err { background: rgba(176,48,48,.08); color: var(--c-danger); border: 1px solid rgba(176,48,48,.2); border-radius: var(--r-sm); padding: 10px 14px; font-size: .83rem; text-align: center; }
+.back-link { display: block; text-align: center; margin-top: 16px; color: var(--c-mid); font-size: .85rem; transition: color var(--t-fast) var(--ease); cursor: pointer; }
+.back-link:hover { color: var(--c-espresso); }
+/* Admin Dashboard Layout */
+.admin-dash { min-height: 100vh; display: flex; background: #f5f0ea; }
+.admin-sidebar { width: 240px; flex-shrink: 0; background: var(--c-espresso); padding: 24px 0; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+.admin-sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
+.admin-sidebar-brand span { font-size: 1.6rem; }
+.admin-sidebar-brand strong { color: var(--c-cream); font-size: .95rem; display: block; }
+.admin-sidebar-brand small { color: var(--c-tan); font-size: .72rem; }
+.admin-nav { flex: 1; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; }
+.anav-btn { width: 100%; padding: 11px 14px; border-radius: var(--r-md); display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; color: var(--c-tan); text-align: left; transition: all var(--t-fast) var(--ease); position: relative; }
+.anav-btn:hover { background: rgba(255,255,255,.08); color: var(--c-cream); }
+.anav-btn.active { background: rgba(201,150,58,.2); color: var(--c-gold-lt); }
+.anav-badge { margin-left: auto; background: var(--c-gold); color: var(--c-espresso); font-size: .7rem; font-weight: 800; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+.admin-logout-btn { margin: 16px 12px 0; padding: 10px 14px; border-radius: var(--r-md); color: rgba(201,168,122,.5); font-size: .82rem; text-align: left; transition: color var(--t-fast) var(--ease); }
+.admin-logout-btn:hover { color: var(--c-tan); }
+.admin-main { flex: 1; overflow-y: auto; }
+.admin-panel { display: none; padding: 36px; }
+.admin-panel.active { display: block; }
+.apanel-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; gap: 16px; flex-wrap: wrap; }
+.apanel-head h2 { color: var(--c-espresso); margin-bottom: 4px; }
+.apanel-head p { color: var(--c-mid); font-size: .88rem; }
+/* Orders Grid */
+.orders-grid { display: flex; flex-direction: column; gap: 16px; }
+.no-orders-msg { text-align: center; padding: 60px; color: var(--c-mid); font-size: .95rem; }
+.order-card { background: var(--c-white); border-radius: var(--r-lg); padding: 20px; border: 1px solid var(--c-cream); box-shadow: var(--sh-xs); animation: slideIn .3s var(--ease-out); border-left: 4px solid var(--c-gold); }
+.order-card.new-order { border-left-color: var(--c-gold); background: #fffdf8; }
+.order-card.working { border-left-color: var(--c-brown); }
+.order-card.ready { border-left-color: var(--c-success); }
+.order-card.completed { border-left-color: var(--c-tan); opacity: .7; }
+.order-card-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
+.order-meta { flex: 1; }
+.order-id { font-size: .72rem; color: var(--c-mid); letter-spacing: .04em; }
+.order-customer { font-weight: 600; color: var(--c-espresso); font-size: 1rem; }
+.order-time { font-size: .75rem; color: var(--c-mid); }
+.order-card-badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.prep-badge-sm { background: var(--c-gold-pale); color: var(--c-roast); padding: 4px 12px; border-radius: 20px; font-size: .72rem; font-weight: 700; border: 1px solid var(--c-sand); }
+.new-badge { background: var(--c-gold); color: white; padding: 3px 10px; border-radius: 20px; font-size: .68rem; font-weight: 800; letter-spacing: .04em; animation: pulseBadge 1.5s infinite; }
+.order-items-list { background: var(--c-ivory); border-radius: var(--r-sm); padding: 10px 14px; margin-bottom: 14px; }
+.order-item-line { display: flex; justify-content: space-between; font-size: .82rem; color: var(--c-brown); padding: 3px 0; }
+.order-total-line { display: flex; justify-content: space-between; font-size: .88rem; font-weight: 600; color: var(--c-espresso); padding-top: 8px; border-top: 1px solid var(--c-cream); margin-top: 4px; }
+.order-card-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.order-status-select { padding: 8px 14px; border-radius: var(--r-md); border: 1.5px solid var(--c-sand); background: var(--c-ivory); font-size: .82rem; font-weight: 500; color: var(--c-espresso); cursor: pointer; outline: none; }
+.order-status-select:focus { border-color: var(--c-gold); }
+.order-phone { font-size: .78rem; color: var(--c-mid); }
+/* Inventory Grid */
+.inventory-grid { display: flex; flex-direction: column; gap: 8px; }
+.inv-category { margin-bottom: 24px; }
+.inv-cat-title { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-mid); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--c-cream); }
+.inv-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.inv-item { background: var(--c-white); border-radius: var(--r-md); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--c-cream); transition: all var(--t-fast) var(--ease); }
+.inv-item:hover { border-color: var(--c-sand); }
+.inv-item-name { font-size: .88rem; font-weight: 500; color: var(--c-espresso); }
+.inv-item-price { font-size: .78rem; color: var(--c-mid); }
+.inv-toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--c-danger); position: relative; transition: background var(--t-base) var(--ease); flex-shrink: 0; }
+.inv-toggle.on { background: var(--c-success); }
+.inv-toggle::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: transform var(--t-base) var(--ease-spring); box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+.inv-toggle.on::after { transform: translateX(20px); }
+/* Reports */
+.report-filters { margin-bottom: 28px; }
+.filter-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.filter-select, .date-input { padding: 10px 14px; border-radius: var(--r-md); border: 1.5px solid var(--c-sand); background: var(--c-white); font-size: .88rem; color: var(--c-espresso); outline: none; transition: border-color var(--t-fast) var(--ease); }
+.filter-select:focus, .date-input:focus { border-color: var(--c-gold); }
+.custom-dates { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--c-mid); }
+.report-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.kpi-card { background: var(--c-white); border-radius: var(--r-lg); padding: 24px; border: 1px solid var(--c-cream); text-align: center; box-shadow: var(--sh-xs); }
+.kpi-card h3 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--c-gold); margin-bottom: 6px; }
+.kpi-card p { font-size: .8rem; color: var(--c-mid); font-weight: 500; }
+.report-list { display: flex; flex-direction: column; gap: 10px; }
+.report-order-row { background: var(--c-white); border-radius: var(--r-md); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--c-cream); font-size: .85rem; color: var(--c-brown); }
+.report-order-row strong { color: var(--c-espresso); }
+/* Shop Controls */
+.shop-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.shop-ctrl-card { background: var(--c-white); border-radius: var(--r-lg); padding: 28px; border: 1px solid var(--c-cream); box-shadow: var(--sh-xs); }
+.shop-ctrl-card h4 { color: var(--c-espresso); margin-bottom: 8px; }
+.curr-status-txt { color: var(--c-mid); font-size: .85rem; margin-bottom: 20px; }
+.status-btns { display: flex; flex-direction: column; gap: 8px; }
+.status-btn { padding: 11px 18px; border-radius: var(--r-md); background: var(--c-ivory); color: var(--c-brown); border: 1.5px solid var(--c-sand); font-size: .88rem; font-weight: 500; text-align: left; transition: all var(--t-fast) var(--ease); }
+.status-btn:hover { border-color: var(--c-tan); background: var(--c-cream); }
+.status-btn.active { background: var(--c-espresso); color: var(--c-cream); border-color: var(--c-espresso); }
+.reopen-note { font-size: .8rem; color: var(--c-gold); margin-top: 10px; font-weight: 500; }
+
+/* Settings / Change Password Panel */
+.settings-card { background: var(--c-white); border-radius: var(--r-lg); padding: 32px; border: 1px solid var(--c-cream); box-shadow: var(--sh-xs); max-width: 480px; }
+.settings-card h4 { color: var(--c-espresso); margin-bottom: 6px; font-size: 1.1rem; }
+.settings-card > p { color: var(--c-mid); font-size: .85rem; margin-bottom: 24px; }
+.settings-success { background: rgba(45,122,79,.1); color: var(--c-success); border: 1px solid rgba(45,122,79,.2); border-radius: var(--r-sm); padding: 10px 14px; font-size: .83rem; text-align: center; margin-top: 12px; }
+.settings-error { background: rgba(176,48,48,.08); color: var(--c-danger); border: 1px solid rgba(176,48,48,.2); border-radius: var(--r-sm); padding: 10px 14px; font-size: .83rem; text-align: center; margin-top: 12px; }
+
+/* ── 15. Admin Dot Trigger ──────────────────────────────── */
+.admin-dot-trigger {
+  position: fixed;
+  top: 13px;
+  left: 13px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  z-index: 9999;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity .2s, transform .2s, box-shadow .2s;
+  box-shadow: 0 0 5px rgba(201,150,58,.45);
+}
+.admin-dot-trigger:hover {
+  opacity: 1;
+  transform: scale(1.6);
+  box-shadow: 0 0 10px rgba(201,150,58,.7);
+}
+
+/* ── 12. Toasts & Notifications ─────────────────────────── */
+
+/* ── 13. Animations ─────────────────────────────────────── */
+@keyframes fadeIn   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes slideIn  { from { opacity: 0; transform: translateX(16px) } to { opacity: 1; transform: translateX(0) } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-100%) } to { opacity: 1; transform: translateY(0) } }
+@keyframes modalIn  { from { opacity: 0; transform: scale(.92) translateY(16px) } to { opacity: 1; transform: scale(1) translateY(0) } }
+@keyframes toastIn  { from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(.95) } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) } }
+@keyframes badgeBump { 0%, 100% { transform: scale(1) } 50% { transform: scale(1.4) } }
+@keyframes pulseBadge { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201,150,58,.4) } 50% { opacity: .85; box-shadow: 0 0 0 8px rgba(201,150,58,0) } }
+@keyframes orbFloat { 0%, 100% { transform: translateY(0) scale(1) } 33% { transform: translateY(-20px) scale(1.05) } 66% { transform: translateY(10px) scale(.95) } }
+@keyframes steamRise { 0% { opacity: 0; transform: translateY(0) scaleX(1) } 20% { opacity: .8 } 80% { opacity: .2 } 100% { opacity: 0; transform: translateY(-40px) scaleX(1.5) } }
+@keyframes glowPulse { 0%, 100% { opacity: .6; transform: translateX(-50%) scaleX(1) } 50% { opacity: 1; transform: translateX(-50%) scaleX(1.1) } }
+@keyframes entFade { 0% { opacity: 0; transform: translateY(8px) } 100% { opacity: 1; transform: translateY(0) } }
+
+/* ── 14. Responsive ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-visual { display: none; }
+  #hero { min-height: auto; padding-bottom: 60px; }
+  .hero-stats { gap: 16px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .admin-sidebar { width: 200px; }
+  .menu-grid { grid-template-columns: 1fr; padding: 0 16px; }
+  .modal { padding: 24px; }
+  .admin-dash { flex-direction: column; }
+  .admin-sidebar { width: 100%; height: auto; position: static; flex-direction: row; flex-wrap: wrap; padding: 12px; }
+  .admin-nav { flex-direction: row; padding: 0; gap: 6px; }
+  .anav-btn { padding: 8px 12px; font-size: .78rem; }
+  .admin-sidebar-brand { display: none; }
+  .admin-panel { padding: 20px; }
+  .cart-sidebar { width: 100%; }
+}
+@media (max-width: 480px) {
+  .hero-ctas { flex-direction: column; }
+  .hero-stats { flex-wrap: wrap; gap: 12px; }
+  .stat-sep { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── ADMIN DOT TRIGGER (top-left entry point) ─────────── -->
+<div class="admin-dot-trigger" id="adminDotTrigger" title="Admin Access"></div>
+
+<!-- ============================================================
+     CUSTOMER VIEW
+============================================================ -->
+<div id="customer-view">
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero">
+        <div class="logo-mark">☕</div>
+        <div class="logo-text-wrap">
+          <span class="logo-main">Steam <em>&</em> Story</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">Our Story</a>
+      </div>
+      <button class="nav-cart-btn" id="cartToggle" aria-label="Open cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-count-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- SHOP STATUS BANNER -->
+  <div id="shopBanner" class="shop-banner hidden"></div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="hero-grain"></div>
+    </div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Est. 2024 · Hyderabad</span>
+      <h1 class="hero-title">Every Cup<br><em>Tells a Story</em></h1>
+      <p class="hero-subtitle">Artisanal coffee crafted with precision. Flavors curated with soul. A café experience unlike any other.</p>
+      <div class="hero-ctas">
+        <a href="#menu" class="btn-primary">Explore Menu</a>
+        <a href="#about" class="btn-ghost">Our Story</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="stat-n">48+</span><span class="stat-l">Menu Items</span></div>
+        <div class="stat-sep"></div>
+        <div class="hero-stat"><span class="stat-n">100%</span><span class="stat-l">Arabica Beans</span></div>
+        <div class="stat-sep"></div>
+        <div class="hero-stat"><span class="stat-n">4.9 ★</span><span class="stat-l">Customer Love</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="cup-scene">
+        <div class="cup-body">
+          <div class="cup-liquid"><div class="liquid-shine"></div></div>
+          <div class="cup-logo">S&amp;S</div>
+        </div>
+        <div class="cup-handle"></div>
+        <div class="cup-saucer"></div>
+        <div class="cup-steam">
+          <div class="steam-line sl1"></div>
+          <div class="steam-line sl2"></div>
+          <div class="steam-line sl3"></div>
+        </div>
+        <div class="cup-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU SECTION -->
+  <section id="menu">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow">Carefully Crafted</span>
+        <h2 class="section-title">Our Menu</h2>
+        <p class="section-sub">From bold espressos to delicate florals — every item is a deliberate choice.</p>
+      </div>
+      <div class="category-scroller">
+        <div class="category-tabs" id="categoryTabs"></div>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-eyebrow">Our Story</span>
+          <h2>Born from Passion,<br><em>Served with Purpose</em></h2>
+          <p>Steam & Story was founded on a simple belief: that great coffee can change your day. We source our beans directly from single-origin farms, roast in small batches, and brew every cup with obsessive care.</p>
+          <p>Whether you're here for your morning ritual or an afternoon escape, we've crafted a space where every sip tells a story worth sharing.</p>
+        </div>
+        <div class="about-pillars">
+          <div class="pillar-card"><span class="pillar-icon">🌿</span><h4>Ethically Sourced</h4><p>Direct-trade partnerships with farmers who share our values and respect the earth.</p></div>
+          <div class="pillar-card"><span class="pillar-icon">🔥</span><h4>Small Batch Roasted</h4><p>Every bean roasted fresh in our micro-roastery. Never mass-produced, always alive.</p></div>
+          <div class="pillar-card"><span class="pillar-icon">❤️</span><h4>Made with Love</h4><p>Our baristas are artists. Every cup is their canvas, every pour a masterpiece.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">☕ Steam <em>&</em> Story</span>
+        <p>Crafting moments worth remembering.</p>
+      </div>
+      <div class="footer-contact">
+        <p>📞 +91 9676214625</p>
+        <p>✉️ demo@gmail.com</p>
+        <p>📍 Srivari Heights, Pragathi Nagar, Hyderabad</p>
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">Story</a>
+      </div>
+      <p class="footer-copy">© 2024 Steam & Story. All rights reserved.</p>
+    </div>
+  </footer>
+
+</div><!-- /customer-view -->
+
+<!-- ============================================================
+     CART SIDEBAR
+============================================================ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar" role="dialog" aria-label="Your order">
+  <div class="cart-head">
+    <div>
+      <h3>Your Order</h3>
+      <p class="cart-subtitle" id="cartSubtitle">0 items</p>
+    </div>
+    <button class="icon-btn" id="cartClose" aria-label="Close cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="empty-cup">☕</div>
+      <p>Your cart is empty</p>
+      <small>Add something delicious to get started!</small>
+    </div>
+    <div class="cart-items-list" id="cartItemsList"></div>
+  </div>
+  <div class="cart-foot hidden" id="cartFoot">
+    <div class="cart-total-row">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">₹0</span>
+    </div>
+    <button class="btn-primary full-w" id="checkoutBtn">Place Order</button>
+  </div>
+</aside>
+
+<!-- FLOATING CART BUTTON (mobile) -->
+<button class="cart-fab hidden" id="cartFab" aria-label="Open cart">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+  </svg>
+  <span id="fabCount">0</span>
+  <span class="fab-price" id="fabPrice">₹0</span>
+</button>
+
+<!-- ============================================================
+     CHECKOUT MODAL
+============================================================ -->
+<div class="modal-overlay hidden" id="checkoutOverlay">
+  <div class="modal checkout-modal" role="dialog" aria-label="Checkout">
+    <button class="modal-close" id="checkoutClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <h3>Almost There!</h3>
+      <p>Just a couple of details to complete your order</p>
+    </div>
+    <div class="order-summary-preview" id="orderPreview"></div>
+    <div class="prep-badge" id="prepBadge"></div>
+    <div class="checkout-form">
+      <div class="form-field">
+        <label for="custName">Your Name</label>
+        <input type="text" id="custName" placeholder="e.g. Arjun Sharma" autocomplete="name">
+        <span class="field-error" id="nameError"></span>
+      </div>
+      <div class="form-field">
+        <label for="custPhone">WhatsApp Number</label>
+        <input type="tel" id="custPhone" placeholder="e.g. 9876543210" autocomplete="tel" maxlength="10">
+        <span class="field-error" id="phoneError"></span>
+      </div>
+      <button class="btn-primary full-w place-btn" id="placeOrderBtn">
+        <span class="btn-icon">☕</span> Place Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     WAITING / ORDER STATUS SCREEN
+============================================================ -->
+<div class="waiting-screen hidden" id="waitingScreen">
+  <div class="waiting-content">
+    <div class="waiting-top">
+      <div class="confirmed-badge pulse-anim">✓ Order Confirmed</div>
+      <h2 class="waiting-greeting">Hang tight, <em id="waitingName">friend</em>!</h2>
+      <p class="waiting-order-ref" id="waitingRef"></p>
+    </div>
+    <div class="countdown-wrap">
+      <div class="countdown-ring-wrap">
+        <svg class="countdown-svg" viewBox="0 0 160 160">
+          <circle class="ring-track" cx="80" cy="80" r="68"/>
+          <circle class="ring-fill" id="ringFill" cx="80" cy="80" r="68"/>
+        </svg>
+        <div class="countdown-center">
+          <span class="countdown-num" id="countdownNum">--</span>
+          <span class="countdown-unit">min left</span>
+        </div>
+      </div>
+      <p class="prep-range-text" id="prepRangeText"></p>
+      <p class="status-label" id="statusLabel">Preparing your order…</p>
+    </div>
+    <div class="multi-note hidden" id="multiNote">
+      🎉 Good news! Your items are being prepared together efficiently.
+    </div>
+    <div class="ent-section">
+      <div class="ent-tabs">
+        <button class="ent-tab active" data-ent="quote">💬 Quotes</button>
+        <button class="ent-tab" data-ent="fact">☕ Coffee Facts</button>
+        <button class="ent-tab" data-ent="benefit">💚 Benefits</button>
+      </div>
+      <div class="ent-card" id="entCard">
+        <p class="ent-text" id="entText">Loading your daily inspiration…</p>
+        <span class="ent-meta" id="entMeta"></span>
+      </div>
+    </div>
+    <div class="waiting-recap" id="waitingRecap"></div>
+  </div>
+</div>
+
+<!-- ORDER READY NOTIFICATION TOAST -->
+<div class="ready-toast hidden" id="readyToast">
+  <div class="toast-body">
+    <span class="toast-emoji">🎉</span>
+    <div>
+      <strong>Your order is ready!</strong>
+      <p>Please collect at the counter ☕</p>
+    </div>
+  </div>
+  <button class="toast-close-btn" id="toastClose">✕</button>
+</div>
+
+<!-- ============================================================
+     ADMIN VIEW
+============================================================ -->
+<div id="admin-view" class="hidden">
+
+  <!-- Admin Login -->
+  <div id="adminLoginScreen" class="admin-login-wrap">
+    <div class="admin-login-card">
+      <div class="admin-brand">
+        <span class="admin-brand-icon">☕</span>
+        <h2>Steam & Story</h2>
+        <p>Admin Portal</p>
+      </div>
+      <div class="form-field">
+        <label>Username</label>
+        <input type="text" id="adminUser" placeholder="Enter username" autocomplete="username">
+      </div>
+      <div class="form-field" style="margin-top:14px">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="••••••••••••" autocomplete="current-password">
+      </div>
+      <p class="admin-err hidden" id="adminErr">⚠ Invalid credentials. Try again.</p>
+      <button class="btn-primary full-w" id="adminLoginBtn" style="margin-top:20px">Login to Dashboard</button>
+      <button class="back-link" id="backToCafe">← Back to Café</button>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDashboard" class="admin-dash hidden">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-brand">
+        <span>☕</span>
+        <div>
+          <strong>Steam & Story</strong>
+          <small>Admin Dashboard</small>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <button class="anav-btn active" data-panel="orders">
+          <span>📋</span> Orders
+          <span class="anav-badge hidden" id="newOrderBadge">0</span>
+        </button>
+        <button class="anav-btn" data-panel="inventory">
+          <span>🛒</span> Inventory
+        </button>
+        <button class="anav-btn" data-panel="reports">
+          <span>📊</span> Reports
+        </button>
+        <button class="anav-btn" data-panel="shop">
+          <span>🏪</span> Shop Controls
+        </button>
+        <button class="anav-btn" data-panel="settings">
+          <span>⚙️</span> Settings
+        </button>
+      </nav>
+      <button class="admin-logout-btn" id="adminLogout">← Logout</button>
+    </aside>
+    <main class="admin-main">
+
+      <!-- ORDERS PANEL -->
+      <div class="admin-panel active" id="panel-orders">
+        <div class="apanel-head">
+          <div><h2>Live Orders</h2><p>New orders appear automatically with sound alerts.</p></div>
+          <button class="btn-sm" id="clearCompletedBtn">Clear Completed</button>
+        </div>
+        <div class="orders-grid" id="adminOrdersGrid">
+          <div class="no-orders-msg">No orders yet. Sit tight! ☕</div>
+        </div>
+      </div>
+
+      <!-- INVENTORY PANEL -->
+      <div class="admin-panel" id="panel-inventory">
+        <div class="apanel-head">
+          <div><h2>Inventory Control</h2><p>Toggle availability. Changes reflect immediately for customers.</p></div>
+        </div>
+        <div class="inventory-grid" id="inventoryGrid"></div>
+      </div>
+
+      <!-- REPORTS PANEL -->
+      <div class="admin-panel" id="panel-reports">
+        <div class="apanel-head">
+          <div><h2>Reports & Analytics</h2><p>Filter and analyze your café's performance.</p></div>
+        </div>
+        <div class="report-filters">
+          <div class="filter-row">
+            <select id="reportRange" class="filter-select">
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="7days">Last 7 Days</option>
+              <option value="30days">Last 30 Days</option>
+              <option value="custom">Custom Range</option>
+            </select>
+            <div id="customDateWrap" class="custom-dates hidden">
+              <input type="date" id="dateFrom" class="date-input">
+              <span>to</span>
+              <input type="date" id="dateTo" class="date-input">
+            </div>
+            <button class="btn-primary" id="runReportBtn">Generate</button>
+          </div>
+        </div>
+        <div class="report-kpis" id="reportKpis">
+          <div class="kpi-card"><h3 id="kpiOrders">0</h3><p>Total Orders</p></div>
+          <div class="kpi-card"><h3 id="kpiRevenue">₹0</h3><p>Total Revenue</p></div>
+          <div class="kpi-card"><h3 id="kpiAvg">₹0</h3><p>Avg. Order Value</p></div>
+        </div>
+        <div class="report-list" id="reportList"></div>
+      </div>
+
+      <!-- SHOP CONTROLS PANEL -->
+      <div class="admin-panel" id="panel-shop">
+        <div class="apanel-head">
+          <div><h2>Shop Controls</h2><p>Manage your café's availability in real-time.</p></div>
+        </div>
+        <div class="shop-controls">
+          <div class="shop-ctrl-card">
+            <h4>Current Status</h4>
+            <p class="curr-status-txt" id="currStatusTxt">Open</p>
+            <div class="status-btns">
+              <button class="status-btn active" id="btnOpen" data-s="open">🟢 Open</button>
+              <button class="status-btn" id="btnBreak" data-s="break">⏸ Break Mode</button>
+              <button class="status-btn" id="btnClosed" data-s="closed">🔴 Closed Today</button>
+            </div>
+          </div>
+          <div class="shop-ctrl-card">
+            <h4>Schedule Reopening</h4>
+            <div class="form-field">
+              <label>Reopen Date</label>
+              <input type="date" id="reopenDate" class="date-input">
+            </div>
+            <div class="form-field" style="margin-top:12px">
+              <label>Reopen Time</label>
+              <input type="time" id="reopenTime" class="date-input">
+            </div>
+            <button class="btn-primary" style="margin-top:16px" id="setReopenBtn">Set Schedule</button>
+            <p class="reopen-note" id="reopenNote"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS PANEL (Change Password) -->
+      <div class="admin-panel" id="panel-settings">
+        <div class="apanel-head">
+          <div><h2>Settings</h2><p>Manage your admin account credentials securely.</p></div>
+        </div>
+        <div class="settings-card">
+          <h4>🔐 Change Admin Password</h4>
+          <p>Enter your current password and choose a strong new password.</p>
+          <div class="form-field">
+            <label>Current Password</label>
+            <input type="password" id="currPass" placeholder="Current password" autocomplete="current-password">
+          </div>
+          <div class="form-field" style="margin-top:14px">
+            <label>New Password</label>
+            <input type="password" id="newPass" placeholder="Min 8 chars, include symbols & numbers" autocomplete="new-password">
+          </div>
+          <div class="form-field" style="margin-top:14px">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPass" placeholder="Repeat new password" autocomplete="new-password">
+          </div>
+          <button class="btn-primary full-w" id="changePassBtn" style="margin-top:20px">Update Password</button>
+          <div id="passMsg" class="hidden"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</div><!-- /admin-view -->
+
+<script>
+/* ============================================================
+   STEAM & STORY — Complete JavaScript
+============================================================ */
+
+/* ── 00. Firebase Configuration ─────────────────────────── */
+// ⚠️ Replace these values with your Firebase project settings
+const FIREBASE_CONFIG = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT.firebaseapp.com",
+  databaseURL:       "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+// Admin WhatsApp: country code + number, no + (e.g. 919676214625)
+const ADMIN_WHATSAPP = '919676214625';
+
+let db = null;
+try {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.database();
+  console.log('[Firebase] Connected ✅');
+} catch(e) {
+  console.warn('[Firebase] Not configured — using localStorage fallback.', e.message);
+}
+
+/* ── 01. Menu Data ──────────────────────────────────────── */
+const MENU = [
+  {
+    id: 'signature', name: 'Signature Brews', icon: '✨',
+    items: [
+      { id: 'sb1', name: 'Cardamom Rose Latte',        price: 299, desc: 'Aromatic cardamom with delicate rose essence', emoji: '🌹', prepTime: [5,7] },
+      { id: 'sb2', name: 'Saffron Honey Cappuccino',   price: 319, desc: 'Golden saffron infused in velvety foam',        emoji: '🌼', prepTime: [5,7] },
+      { id: 'sb3', name: 'Brown Sugar Shaken Espresso',price: 279, desc: 'Bold espresso over ice, sweetened perfection',  emoji: '🍬', prepTime: [5,7] },
+      { id: 'sb4', name: 'Lavender Cloud Latte',       price: 309, desc: 'Floral lavender in a pillowy steamed milk',     emoji: '💜', prepTime: [5,7] },
+    ]
+  },
+  {
+    id: 'classic', name: 'Classic Coffee', icon: '☕',
+    items: [
+      { id: 'cc1', name: 'Espresso',   price: 149, desc: 'Intense single-origin shot, pulled perfectly',  emoji: '☕', prepTime: [3,5] },
+      { id: 'cc2', name: 'Americano',  price: 169, desc: 'Smooth espresso diluted with hot water',        emoji: '🫖', prepTime: [3,5] },
+      { id: 'cc3', name: 'Cappuccino', price: 199, desc: 'Equal parts espresso, steam and silky foam',    emoji: '☕', prepTime: [3,5] },
+      { id: 'cc4', name: 'Flat White', price: 219, desc: 'Double ristretto in velvety microfoam',         emoji: '🥛', prepTime: [3,5] },
+      { id: 'cc5', name: 'Café Latte', price: 209, desc: 'Espresso with lush steamed milk, latte art',    emoji: '🎨', prepTime: [3,5] },
+      { id: 'cc6', name: 'Mocha',      price: 239, desc: 'Espresso, dark chocolate & whipped cream',      emoji: '🍫', prepTime: [5,7] },
+    ]
+  },
+  {
+    id: 'cold', name: 'Cold & Iced', icon: '🧊',
+    items: [
+      { id: 'ci1', name: 'Cold Brew',          price: 249, desc: '20-hour steeped, ultra-smooth & bold',         emoji: '🧊', prepTime: [4,6] },
+      { id: 'ci2', name: 'Iced Caramel Latte', price: 269, desc: 'Caramel ribbons in cold milk over ice',        emoji: '🍮', prepTime: [4,6] },
+      { id: 'ci3', name: 'Iced Mocha',         price: 259, desc: 'Chocolate espresso, chilled & indulgent',      emoji: '🍫', prepTime: [4,6] },
+      { id: 'ci4', name: 'Frappuccino',        price: 289, desc: 'Blended ice coffee topped with cream',         emoji: '🥤', prepTime: [4,6] },
+      { id: 'ci5', name: 'Cold Brew Tonic',    price: 259, desc: 'Cold brew over tonic water, citrus zest',      emoji: '🫧', prepTime: [4,6] },
+    ]
+  },
+  {
+    id: 'tea', name: 'Teas & Alternatives', icon: '🍵',
+    items: [
+      { id: 'ta1', name: 'Masala Chai',          price: 139, desc: 'Spiced Indian tea brewed the traditional way',  emoji: '🫖', prepTime: [3,5] },
+      { id: 'ta2', name: 'Matcha Latte',         price: 269, desc: 'Ceremonial grade matcha with oat milk',        emoji: '🍵', prepTime: [3,5] },
+      { id: 'ta3', name: 'Golden Turmeric Latte',price: 229, desc: 'Anti-inflammatory golden milk, warming spices', emoji: '✨', prepTime: [3,5] },
+      { id: 'ta4', name: 'Earl Grey Latte',      price: 179, desc: 'Bergamot-infused tea with steamed milk',       emoji: '🫖', prepTime: [3,5] },
+      { id: 'ta5', name: 'Blue Butterfly Latte', price: 249, desc: 'Butterfly pea flower, a magical colour shift',  emoji: '🦋', prepTime: [3,5] },
+    ]
+  },
+  {
+    id: 'bites', name: 'Quick Bites', icon: '🥐',
+    items: [
+      { id: 'qb1', name: 'Avocado Toast',      price: 299, desc: 'Sourdough, smashed avocado, chili flakes',      emoji: '🥑', prepTime: [8,12] },
+      { id: 'qb2', name: 'Croissant Sandwich', price: 279, desc: 'Flaky croissant with cheese & fresh greens',    emoji: '🥐', prepTime: [8,12] },
+      { id: 'qb3', name: 'Loaded Fries',       price: 249, desc: 'Crispy fries, cheese sauce & jalapeños',        emoji: '🍟', prepTime: [8,12] },
+      { id: 'qb4', name: 'Grilled Panini',     price: 319, desc: 'Pressed sandwich with melted cheese & veg',     emoji: '🥪', prepTime: [8,12] },
+      { id: 'qb5', name: 'Mushroom Bruschetta',price: 259, desc: 'Sautéed mushrooms on toasted garlic bread',     emoji: '🍄', prepTime: [8,12] },
+    ]
+  },
+  {
+    id: 'sweet', name: 'Sweet Treats', icon: '🍰',
+    items: [
+      { id: 'st1', name: 'Tiramisu',            price: 249, desc: 'Classic Italian coffee dessert, made fresh',   emoji: '🍮', prepTime: [2,4] },
+      { id: 'st2', name: 'Chocolate Lava Cake', price: 269, desc: 'Warm, gooey chocolate with vanilla gelato',   emoji: '🍫', prepTime: [2,4] },
+      { id: 'st3', name: 'Blueberry Cheesecake',price: 259, desc: 'New York style with fresh blueberry compote', emoji: '🫐', prepTime: [2,4] },
+      { id: 'st4', name: 'Cinnamon Roll',       price: 199, desc: 'Warm, fluffy, drizzled with cream cheese',    emoji: '🌀', prepTime: [2,4] },
+      { id: 'st5', name: 'Affogato',            price: 219, desc: 'Vanilla gelato drowned in hot espresso',      emoji: '🍨', prepTime: [2,4] },
+    ]
+  },
+  {
+    id: 'addons', name: 'Add-ons', icon: '➕',
+    items: [
+      { id: 'ao1', name: 'Extra Espresso Shot', price: 49, desc: 'Boost your drink with an extra shot',          emoji: '☕', prepTime: [1,2] },
+      { id: 'ao2', name: 'Oat Milk Upgrade',    price: 59, desc: 'Swap to barista-grade oat milk',               emoji: '🌾', prepTime: [1,2] },
+      { id: 'ao3', name: 'Whipped Cream',       price: 39, desc: 'Fresh cream swirled on top',                   emoji: '🍦', prepTime: [1,2] },
+      { id: 'ao4', name: 'Caramel Drizzle',     price: 39, desc: 'Silky caramel on any drink',                   emoji: '🍯', prepTime: [1,2] },
+      { id: 'ao5', name: 'Sugar-Free Syrup',    price: 49, desc: 'Flavoured, zero-sugar sweetener',              emoji: '🫙', prepTime: [1,2] },
+      { id: 'ao6', name: 'Extra Marshmallow',   price: 29, desc: 'Fluffy mini marshmallows on hot drinks',       emoji: '☁️', prepTime: [1,2] },
+    ]
+  }
+];
+
+/* ── 02. Entertainment Content ──────────────────────────── */
+const CONTENT = {
+  quote: [
+    { text: "Coffee is a language in itself.", meta: "— Jackie Chan" },
+    { text: "Even bad coffee is better than no coffee at all.", meta: "— David Lynch" },
+    { text: "Life is too short to drink bad coffee.", meta: "— Unknown" },
+    { text: "Coffee first. Adulting second.", meta: "— Every barista ever" },
+    { text: "Behind every successful person is a substantial amount of coffee.", meta: "— Unknown" },
+    { text: "Espresso yourself!", meta: "— Steam & Story" },
+    { text: "May your coffee be strong and your Monday be short.", meta: "— Unknown" },
+    { text: "Coffee: because adulting is hard.", meta: "— Steam & Story" },
+    { text: "I have measured out my life with coffee spoons.", meta: "— T.S. Eliot" },
+    { text: "Adventure in life is good; consistency in coffee even better.", meta: "— Justina Chen" },
+  ],
+  fact: [
+    { text: "Coffee is the second most traded commodity in the world after oil.", meta: "☕ Coffee Fact" },
+    { text: "Finland is the world's biggest coffee consumer — Finns drink about 12 kg per person every year!", meta: "☕ Coffee Fact" },
+    { text: "Espresso has LESS caffeine than regular drip coffee — the shorter brew time extracts less caffeine.", meta: "☕ Coffee Fact" },
+    { text: "The word 'espresso' comes from Italian and means 'pressed out'. Each shot is brewed in under 30 seconds.", meta: "☕ Coffee Fact" },
+    { text: "Coffee beans are actually the seeds of red berries, known as coffee cherries. Technically a fruit!", meta: "☕ Coffee Fact" },
+    { text: "Beethoven was obsessed with coffee. He reportedly counted exactly 60 beans per cup every morning.", meta: "☕ Coffee Fact" },
+    { text: "A latte translates directly to 'milk coffee' in Italian. A cappuccino is named after the Capuchin friars.", meta: "☕ Coffee Fact" },
+    { text: "Scientists have identified over 800 aromatic compounds in roasted beans.", meta: "☕ Coffee Fact" },
+    { text: "Cold brew has up to 65% less acidity than hot coffee, making it gentler on your stomach.", meta: "☕ Coffee Fact" },
+    { text: "The first webcam was invented at Cambridge to monitor a coffee pot so people didn't walk to an empty machine!", meta: "☕ Coffee Fact" },
+  ],
+  benefit: [
+    { text: "Coffee improves physical performance by increasing adrenaline levels. Have a cup about 30 minutes before a workout!", meta: "💚 Health Benefit" },
+    { text: "Coffee contains essential nutrients including riboflavin (B2), niacin (B3), magnesium and potassium.", meta: "💚 Health Benefit" },
+    { text: "Studies show that coffee drinkers have up to 40% lower risk of liver disease, including liver cancer.", meta: "💚 Health Benefit" },
+    { text: "Caffeine has been shown to improve mood and brain function significantly.", meta: "💚 Health Benefit" },
+    { text: "Regular coffee consumption is associated with up to 23–50% lower risk of Type 2 diabetes.", meta: "💚 Health Benefit" },
+    { text: "Matcha contains L-theanine, which promotes calm alertness — focus without the jitters.", meta: "💚 Health Benefit" },
+    { text: "Turmeric latte contains curcumin, a powerful anti-inflammatory compound. Your golden latte is medicinal magic!", meta: "💚 Health Benefit" },
+    { text: "Coffee drinkers have a 65% lower risk of getting Alzheimer's disease according to multiple studies.", meta: "💚 Health Benefit" },
+    { text: "A single cup of coffee can boost your metabolic rate by 3–11%.", meta: "💚 Health Benefit" },
+    { text: "Chai spices like cinnamon and ginger have powerful antioxidant and anti-inflammatory properties.", meta: "💚 Health Benefit" },
+  ]
+};
+
+/* ── 03. App State ──────────────────────────────────────── */
+const STATE = {
+  cart:       [],
+  orders:     JSON.parse(localStorage.getItem('ss_orders') || '[]'),
+  inventory:  JSON.parse(localStorage.getItem('ss_inventory') || '{}'),
+  shopStatus: localStorage.getItem('ss_shopStatus') || 'open',
+  reopenAt:   localStorage.getItem('ss_reopenAt') || '',
+  currentOrder: null,
+  activeCat:  'signature',
+  adminLoggedIn: false,
+  countdownInterval: null,
+  entInterval:       null,
+  orderPollInterval: null,
+  audioCtx: null,
+  entType: 'quote',
+  entIndex: { quote: 0, fact: 0, benefit: 0 },
+  newOrders: 0,
+  // Admin credentials (stored in state so they can be changed at runtime)
+  adminCreds: {
+    user: JSON.parse(localStorage.getItem('ss_adminCreds') || 'null')?.user || 'SteamAdmin',
+    pass: JSON.parse(localStorage.getItem('ss_adminCreds') || 'null')?.pass || 'Caf3@St0ry#2024!'
+  }
+};
+
+/* ── 04. DOM Helpers ────────────────────────────────────── */
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if(cls) e.className = cls; if(html !== undefined) e.innerHTML = html; return e; };
+
+function saveOrders() {
+  localStorage.setItem('ss_orders', JSON.stringify(STATE.orders));
+  if (db) {
+    STATE.orders.forEach(order => {
+      db.ref('orders/' + order.id).set(order).catch(()=>{});
+    });
+  }
+}
+function saveInventory() { localStorage.setItem('ss_inventory', JSON.stringify(STATE.inventory)); }
+function saveShop()      { localStorage.setItem('ss_shopStatus', STATE.shopStatus); }
+function saveReopen()    { localStorage.setItem('ss_reopenAt',  STATE.reopenAt); }
+function saveAdminCreds(){ localStorage.setItem('ss_adminCreds', JSON.stringify(STATE.adminCreds)); }
+
+function genId() { return 'ORD-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2,3).toUpperCase(); }
+function formatTime(d) { return new Date(d).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }); }
+function formatDate(d)  { return new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }); }
+function todayStr()     { return new Date().toISOString().slice(0,10); }
+
+/* ── 05. Navigation & Scroll ────────────────────────────── */
+function initNav() {
+  const nav = $('#navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Admin access via URL param
+  const urlAdmin = new URLSearchParams(location.search).has('admin');
+  if (urlAdmin) { openAdmin(); return; }
+
+  // Admin dot trigger (top-left)
+  $('#adminDotTrigger').addEventListener('click', () => {
+    openAdmin();
+  });
+}
+
+function openAdmin() {
+  $('#customer-view').style.display = 'none';
+  $('#admin-view').classList.remove('hidden');
+  $('#adminLoginScreen').classList.remove('hidden');
+  $('#adminDashboard').classList.add('hidden');
+  initAdminInventoryGrid();
+}
+
+/* ── 06. Menu Rendering ─────────────────────────────────── */
+function initMenu() {
+  renderCategoryTabs();
+  renderMenuGrid(STATE.activeCat);
+}
+
+function renderCategoryTabs() {
+  const tabs = $('#categoryTabs');
+  tabs.innerHTML = '';
+  MENU.forEach(cat => {
+    const btn = el('button', 'cat-tab' + (cat.id === STATE.activeCat ? ' active' : ''));
+    btn.textContent = cat.icon + ' ' + cat.name;
+    btn.dataset.cat = cat.id;
+    btn.addEventListener('click', () => {
+      STATE.activeCat = cat.id;
+      $$('.cat-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenuGrid(cat.id);
+    });
+    tabs.appendChild(btn);
+  });
+}
+
+function renderMenuGrid(catId) {
+  const grid = $('#menuGrid');
+  const cat = MENU.find(c => c.id === catId);
+  grid.innerHTML = '';
+  cat.items.forEach(item => {
+    const inStock = STATE.inventory[item.id] !== false;
+    const card = buildMenuCard(item, inStock);
+    grid.appendChild(card);
+  });
+}
+
+function buildMenuCard(item, inStock) {
+  const card = el('div', 'menu-card' + (!inStock ? ' out-of-stock' : ''));
+  const cartQty = (STATE.cart.find(c => c.id === item.id) || {}).qty || 0;
+
+  card.innerHTML = `
+    <div class="card-img-placeholder">${item.emoji}</div>
+    <div class="card-body">
+      <p class="card-name">${item.name}</p>
+      <p class="card-desc">${item.desc}</p>
+      <div class="card-footer">
+        <p class="card-price">₹${item.price}</p>
+        <div class="card-cart-ctrl" id="ctrl-${item.id}">
+          ${!inStock
+            ? '<span style="font-size:.72rem;color:#b03030;font-weight:700;">Out of Stock</span>'
+            : cartQty === 0
+              ? `<button class="add-btn" data-id="${item.id}">ADD</button>`
+              : `<div class="qty-control">
+                  <button class="qty-btn" data-id="${item.id}" data-act="dec">−</button>
+                  <span class="qty-num">${cartQty}</span>
+                  <button class="qty-btn" data-id="${item.id}" data-act="inc">+</button>
+                </div>`
+          }
+        </div>
+      </div>
+    </div>`;
+
+  if (inStock) {
+    bindCardCtrl(card, item);
+  }
+  return card;
+}
+
+function bindCardCtrl(card, item) {
+  const addBtn = card.querySelector('.add-btn');
+  if (addBtn) addBtn.addEventListener('click', (e) => { e.stopPropagation(); cartUpdateItem(item, 1); });
+  card.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cartUpdateItem(item, btn.dataset.act === 'inc' ? 1 : -1);
+    });
+  });
+}
+
+function cartUpdateItem(item, delta) {
+  const existing = STATE.cart.find(c => c.id === item.id);
+  if (existing) {
+    existing.qty += delta;
+    if (existing.qty <= 0) STATE.cart = STATE.cart.filter(c => c.id !== item.id);
+  } else if (delta > 0) {
+    STATE.cart.push({ ...item, qty: 1 });
+  }
+  updateCartUI();
+  animateBadge();
+  // Update the card control inline without full re-render
+  const ctrl = document.getElementById('ctrl-' + item.id);
+  if (ctrl) {
+    const newQty = (STATE.cart.find(c => c.id === item.id) || {}).qty || 0;
+    if (newQty === 0) {
+      ctrl.innerHTML = `<button class="add-btn" data-id="${item.id}">ADD</button>`;
+    } else {
+      ctrl.innerHTML = `<div class="qty-control">
+        <button class="qty-btn" data-id="${item.id}" data-act="dec">−</button>
+        <span class="qty-num">${newQty}</span>
+        <button class="qty-btn" data-id="${item.id}" data-act="inc">+</button>
+      </div>`;
+    }
+    // Rebind events on freshly-rendered buttons
+    const addBtn = ctrl.querySelector('.add-btn');
+    if (addBtn) addBtn.addEventListener('click', (e) => { e.stopPropagation(); cartUpdateItem(item, 1); });
+    ctrl.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cartUpdateItem(item, btn.dataset.act === 'inc' ? 1 : -1);
+      });
+    });
+  }
+}
+
+/* ── 07. Cart System ────────────────────────────────────── */
+function addToCart(item) {
+  const numEl = $(`#qty-num-${item.id}`);
+  let qty = numEl ? parseInt(numEl.textContent) || 0 : 0;
+  if (qty === 0) qty = 1;
+  const existing = STATE.cart.find(c => c.id === item.id);
+  if (existing) { existing.qty += qty; }
+  else { STATE.cart.push({ ...item, qty }); }
+  if (numEl) numEl.textContent = 0;
+  updateCartUI();
+  animateBadge();
+  if (STATE.cart.length === 1) openCart();
+}
+
+function updateCartUI() {
+  const items = STATE.cart;
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s, i) => s + i.qty, 0);
+
+  $('#cartCount').textContent   = count;
+  if ($('#fabCount')) $('#fabCount').textContent = count;
+  if ($('#fabPrice')) $('#fabPrice').textContent = '₹' + total;
+  $('#cartSubtitle').textContent = count + ' item' + (count !== 1 ? 's' : '');
+
+  const listEl = $('#cartItemsList');
+  const emptyEl = $('#cartEmpty');
+  const footEl  = $('#cartFoot');
+  const fabEl   = $('#cartFab');
+
+  if (items.length === 0) {
+    emptyEl.classList.remove('hidden');
+    listEl.innerHTML = '';
+    footEl.classList.add('hidden');
+    if (fabEl) fabEl.classList.add('hidden');
+  } else {
+    emptyEl.classList.add('hidden');
+    footEl.classList.remove('hidden');
+    if (fabEl) fabEl.classList.remove('hidden');
+    listEl.innerHTML = '';
+    items.forEach(item => {
+      const row = el('div', 'cart-item');
+      row.innerHTML = `
+        <div class="cart-item-thumb">${item.emoji}</div>
+        <div class="cart-item-info">
+          <p class="cart-item-name">${item.name}</p>
+          <p class="cart-item-price">₹${(item.price * item.qty).toLocaleString()}</p>
+        </div>
+        <div class="cart-item-controls">
+          <button class="ci-btn" data-id="${item.id}" data-act="dec">−</button>
+          <span class="ci-num">${item.qty}</span>
+          <button class="ci-btn" data-id="${item.id}" data-act="inc">+</button>
+        </div>`;
+      row.querySelectorAll('.ci-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const act = btn.dataset.act;
+          const it = STATE.cart.find(c => c.id === btn.dataset.id);
+          if (!it) return;
+          if (act === 'inc') it.qty++;
+          else { it.qty--; if (it.qty <= 0) STATE.cart = STATE.cart.filter(c => c.id !== it.id); }
+          updateCartUI();
+        });
+      });
+      listEl.appendChild(row);
+    });
+  }
+  $('#cartSubtotal').textContent = '₹' + total.toLocaleString();
+}
+
+function openCart() {
+  $('#cartSidebar').classList.add('open');
+  $('#cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  $('#cartSidebar').classList.remove('open');
+  $('#cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function animateBadge() {
+  const b = $('#cartCount');
+  b.classList.remove('bump');
+  void b.offsetWidth;
+  b.classList.add('bump');
+}
+
+function initCart() {
+  $('#cartToggle').addEventListener('click', openCart);
+  $('#cartClose').addEventListener('click', closeCart);
+  $('#cartOverlay').addEventListener('click', closeCart);
+  if ($('#cartFab')) $('#cartFab').addEventListener('click', openCart);
+  $('#checkoutBtn').addEventListener('click', () => {
+    if (STATE.cart.length === 0) return;
+    closeCart();
+    openCheckout();
+  });
+}
+
+/* ── 08. Checkout & Order Placement ─────────────────────── */
+function calcPrepTime(cartItems) {
+  let maxMin = 0, maxMax = 0;
+  cartItems.forEach(item => {
+    const [mn, mx] = item.prepTime;
+    maxMin = Math.max(maxMin, mn);
+    maxMax = Math.max(maxMax, mx);
+  });
+  const buffer = 2;
+  const overhead = cartItems.length > 2 ? 1 : 0;
+  return { min: maxMin + buffer, max: maxMax + buffer + overhead, totalMins: maxMax + buffer + overhead };
+}
+
+function openCheckout() {
+  const preview = $('#orderPreview');
+  preview.innerHTML = STATE.cart.map(i =>
+    `<div class="preview-item"><span>${i.qty}× ${i.name}</span><strong>₹${(i.price*i.qty).toLocaleString()}</strong></div>`
+  ).join('') + `<div class="preview-item" style="border-top:1px solid #e8d8b8;margin-top:6px;padding-top:6px;font-weight:600;"><span>Total</span><strong>₹${STATE.cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString()}</strong></div>`;
+
+  const prep = calcPrepTime(STATE.cart);
+  $('#prepBadge').innerHTML = `⏱ Estimated ready in ${prep.min}–${prep.max} mins`;
+  $('#prepBadge').classList.remove('hidden');
+  $('#checkoutOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  $('#custName').value = '';
+  $('#custPhone').value = '';
+  $('#nameError').textContent = '';
+  $('#phoneError').textContent = '';
+  $('#custName').focus();
+}
+
+function closeCheckout() {
+  $('#checkoutOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function placeOrder() {
+  const name  = $('#custName').value.trim();
+  const phone = $('#custPhone').value.trim();
+  let valid = true;
+
+  if (!name) { $('#nameError').textContent = 'Please enter your name'; $('#custName').classList.add('error'); valid = false; }
+  else { $('#nameError').textContent = ''; $('#custName').classList.remove('error'); }
+
+  if (!/^[6-9]\d{9}$/.test(phone)) { $('#phoneError').textContent = 'Enter a valid 10-digit WhatsApp number'; $('#custPhone').classList.add('error'); valid = false; }
+  else { $('#phoneError').textContent = ''; $('#custPhone').classList.remove('error'); }
+
+  if (!valid) return;
+
+  const prep = calcPrepTime(STATE.cart);
+  const order = {
+    id:       genId(),
+    name, phone,
+    items:    JSON.parse(JSON.stringify(STATE.cart)),
+    total:    STATE.cart.reduce((s,i)=>s+i.price*i.qty,0),
+    status:   'new',
+    prepMin:  prep.min,
+    prepMax:  prep.max,
+    placedAt: Date.now(),
+    readyAt:  null,
+  };
+
+  STATE.orders.unshift(order);
+  STATE.currentOrder = order;
+  STATE.cart = [];
+  updateCartUI();
+  closeCheckout();
+  showWaitingScreen(order);
+  notifyAdminNewOrder(order);
+}
+
+function initCheckout() {
+  $('#checkoutClose').addEventListener('click', closeCheckout);
+  $('#checkoutOverlay').addEventListener('click', (e) => { if (e.target === $('#checkoutOverlay')) closeCheckout(); });
+  $('#placeOrderBtn').addEventListener('click', placeOrder);
+  $('#custPhone').addEventListener('input', () => {
+    $('#custPhone').value = $('#custPhone').value.replace(/\D/g,'').slice(0,10);
+  });
+}
+
+/* ── 09. Waiting Screen & Countdown ─────────────────────── */
+function showWaitingScreen(order) {
+  const ws = $('#waitingScreen');
+  ws.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  $('#waitingName').textContent = order.name.split(' ')[0];
+  $('#waitingRef').textContent = 'Order ' + order.id + ' · Placed at ' + formatTime(order.placedAt);
+  $('#prepRangeText').textContent = `Your order will be ready in approximately ${order.prepMin}–${order.prepMax} minutes ☕`;
+
+  const recap = $('#waitingRecap');
+  recap.innerHTML = `<p class="recap-title">Your Order</p>` +
+    order.items.map(i => `<div class="recap-item"><span>${i.qty}× ${i.name}</span><span>₹${(i.price*i.qty).toLocaleString()}</span></div>`).join('') +
+    `<div class="recap-total"><span>Total</span><span>₹${order.total.toLocaleString()}</span></div>`;
+
+  if (order.items.length > 1) $('#multiNote').classList.remove('hidden');
+  else $('#multiNote').classList.add('hidden');
+
+  startCountdown(order.prepMax * 60);
+  startEntertainment();
+  pollOrderStatus(order.id);
+}
+
+function startCountdown(totalSecs) {
+  clearInterval(STATE.countdownInterval);
+  let remaining = totalSecs;
+  const circumference = 2 * Math.PI * 68;
+  $('#ringFill').style.strokeDasharray = circumference;
+
+  function updateDisplay() {
+    const mins = Math.ceil(remaining / 60);
+    $('#countdownNum').textContent = remaining <= 0 ? '0' : mins;
+    const progress = Math.max(0, remaining / totalSecs);
+    const offset = circumference * (1 - progress);
+    $('#ringFill').style.strokeDashoffset = offset;
+
+    const pct = 1 - progress;
+    const lbl = $('#statusLabel');
+    if (pct < 0.33)        lbl.textContent = 'Preparing your order…';
+    else if (pct < 0.66)   lbl.textContent = 'Almost halfway there…';
+    else if (pct < 0.85)   lbl.textContent = 'Almost ready…';
+    else if (remaining > 0) lbl.textContent = 'Your order is nearly done!';
+    else { lbl.textContent = 'Ready for pickup! ☕'; $('#ringFill').style.stroke = '#2d7a4f'; }
+  }
+
+  updateDisplay();
+  STATE.countdownInterval = setInterval(() => {
+    if (remaining > 0) remaining--;
+    updateDisplay();
+  }, 1000);
+}
+
+function startEntertainment() {
+  clearInterval(STATE.entInterval);
+  showEntContent('quote');
+  STATE.entInterval = setInterval(() => {
+    const types = ['quote', 'fact', 'benefit'];
+    const idx  = types.indexOf(STATE.entType);
+    const next = types[(idx+1) % types.length];
+    STATE.entType = next;
+    $$('.ent-tab').forEach(t => t.classList.toggle('active', t.dataset.ent === next));
+    showEntContent(next);
+  }, 8000);
+}
+
+function showEntContent(type) {
+  const list = CONTENT[type];
+  const i    = STATE.entIndex[type];
+  const item = list[i % list.length];
+  STATE.entIndex[type] = (i + 1) % list.length;
+  const card = $('#entCard');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'entFade .4s ease-out';
+  $('#entText').textContent = item.text;
+  $('#entMeta').textContent = item.meta;
+}
+
+function pollOrderStatus(orderId) {
+  clearInterval(STATE.orderPollInterval);
+
+  function handleReady(order) {
+    if (order._notified) return;
+    order._notified = true;
+    saveOrders();
+    showReadyNotification(order);
+    clearInterval(STATE.orderPollInterval);
+    if (STATE._firebaseOrderRef) { STATE._firebaseOrderRef.off(); STATE._firebaseOrderRef = null; }
+    clearInterval(STATE.countdownInterval);
+    $('#statusLabel').textContent = 'Ready for pickup! ☕';
+    $('#countdownNum').textContent = '✓';
+    $('#ringFill').style.stroke = '#2d7a4f';
+    $('#ringFill').style.strokeDashoffset = 0;
+  }
+
+  if (db) {
+    // Firebase real-time listener
+    const ref = db.ref('orders/' + orderId);
+    STATE._firebaseOrderRef = ref;
+    ref.on('value', snap => {
+      const data = snap.val();
+      if (!data) return;
+      // Sync status back into local STATE
+      const local = STATE.orders.find(o => o.id === orderId);
+      if (local) local.status = data.status;
+      if (data.status === 'ready') handleReady(local || data);
+    });
+  } else {
+    // localStorage fallback polling
+    STATE.orderPollInterval = setInterval(() => {
+      const order = STATE.orders.find(o => o.id === orderId);
+      if (!order) return;
+      // Also check localStorage in case admin is on same device
+      const fresh = JSON.parse(localStorage.getItem('ss_orders') || '[]');
+      const freshOrder = fresh.find(o => o.id === orderId);
+      if (freshOrder) order.status = freshOrder.status;
+      if (order.status === 'ready') handleReady(order);
+    }, 2000);
+  }
+}
+
+function showReadyNotification(order) {
+  const toast = $('#readyToast');
+  toast.classList.remove('hidden');
+  playChime();
+
+  // Open WhatsApp for customer
+  const waMsg = encodeURIComponent(
+    `☕ *Your order is ready, ${order.name}!*\n\n` +
+    `*Steam & Story* — Order *${order.id}* is ready for pickup! 🎉\n\n` +
+    `Please collect it at the counter. See you soon! 😊`
+  );
+  setTimeout(() => {
+    window.open(`https://wa.me/91${order.phone}?text=${waMsg}`, '_blank');
+  }, 600);
+}
+
+function initWaitingScreen() {
+  $$('.ent-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      STATE.entType = btn.dataset.ent;
+      $$('.ent-tab').forEach(t => t.classList.toggle('active', t.dataset.ent === btn.dataset.ent));
+      clearInterval(STATE.entInterval);
+      showEntContent(btn.dataset.ent);
+      startEntertainment();
+    });
+  });
+  $('#toastClose').addEventListener('click', () => {
+    $('#readyToast').classList.add('hidden');
+  });
+}
+
+/* ── 10. Admin: Auth & Dashboard ────────────────────────── */
+function initAdmin() {
+  $('#adminLoginBtn').addEventListener('click', adminLogin);
+  $('#adminPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') adminLogin(); });
+  $('#adminLogout').addEventListener('click', adminLogout);
+  $('#backToCafe').addEventListener('click', () => {
+    $('#admin-view').classList.add('hidden');
+    $('#customer-view').style.display = '';
+  });
+
+  $$('.anav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panelId = btn.dataset.panel;
+      $$('.anav-btn').forEach(b => b.classList.toggle('active', b === btn));
+      $$('.admin-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + panelId));
+      if (panelId === 'reports')   generateReport();
+      if (panelId === 'inventory') renderInventoryGrid();
+    });
+  });
+}
+
+function adminLogin() {
+  const user = $('#adminUser').value.trim();
+  const pass = $('#adminPass').value;
+
+  if (user === STATE.adminCreds.user && pass === STATE.adminCreds.pass) {
+    STATE.adminLoggedIn = true;
+    $('#adminLoginScreen').classList.add('hidden');
+    $('#adminDashboard').classList.remove('hidden');
+    renderAdminOrders();
+    renderInventoryGrid();
+    startAdminPoll();
+    updateShopStatusButtons();
+    $('#adminErr').classList.add('hidden');
+  } else {
+    $('#adminErr').classList.remove('hidden');
+    $('#adminPass').value = '';
+    $('#adminPass').focus();
+  }
+}
+
+function adminLogout() {
+  STATE.adminLoggedIn = false;
+  clearInterval(STATE.orderPollInterval);
+  $('#adminLoginScreen').classList.remove('hidden');
+  $('#adminDashboard').classList.add('hidden');
+  $('#adminUser').value = '';
+  $('#adminPass').value = '';
+}
+
+function startAdminPoll() {
+  if (db) {
+    // Firebase real-time listener for admin
+    db.ref('orders').on('value', snap => {
+      const data = snap.val();
+      if (!data) return;
+      const incoming = Object.values(data).sort((a, b) => b.placedAt - a.placedAt);
+      const prevCount = STATE.orders.length;
+      const newCount = incoming.filter(o => !STATE.orders.find(x => x.id === o.id)).length;
+      STATE.orders = incoming;
+      localStorage.setItem('ss_orders', JSON.stringify(STATE.orders));
+      if (newCount > 0) {
+        STATE.newOrders += newCount;
+        updateNewOrderBadge();
+        playChime();
+      }
+      renderAdminOrders();
+    });
+  } else {
+    // localStorage fallback
+    setInterval(() => {
+      const fresh = JSON.parse(localStorage.getItem('ss_orders') || '[]');
+      const newCount = fresh.filter(o => !STATE.orders.find(x => x.id === o.id)).length;
+      if (newCount > 0) {
+        STATE.newOrders += newCount;
+        updateNewOrderBadge();
+        renderAdminOrders();
+        playChime();
+      }
+      STATE.orders = fresh;
+    }, 3000);
+  }
+}
+
+function updateNewOrderBadge() {
+  const badge = $('#newOrderBadge');
+  if (STATE.newOrders > 0) {
+    badge.textContent = STATE.newOrders;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+/* ── 11. Admin: Order Management ────────────────────────── */
+function renderAdminOrders() {
+  const grid = $('#adminOrdersGrid');
+  if (!STATE.orders.length) {
+    grid.innerHTML = '<div class="no-orders-msg">No orders yet. Sit tight! ☕</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  STATE.orders.forEach(order => { grid.appendChild(buildOrderCard(order)); });
+}
+
+function buildOrderCard(order) {
+  const isNew = order.status === 'new';
+  const card  = el('div', `order-card ${order.status === 'new' ? 'new-order' : order.status}`);
+  card.id     = 'order-card-' + order.id;
+  card.innerHTML = `
+    <div class="order-card-head">
+      <div class="order-meta">
+        <p class="order-id">${order.id}</p>
+        <p class="order-customer">👤 ${order.name}</p>
+        <p class="order-time">📅 ${formatDate(order.placedAt)} at ${formatTime(order.placedAt)}</p>
+      </div>
+      <div class="order-card-badges">
+        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+        <span class="prep-badge-sm">⏱ ${order.prepMin}–${order.prepMax} min</span>
+      </div>
+    </div>
+    <div class="order-items-list">
+      ${order.items.map(i => `<div class="order-item-line"><span>${i.qty}× ${i.name}</span><span>₹${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
+      <div class="order-total-line"><span>Total</span><span>₹${order.total.toLocaleString()}</span></div>
+    </div>
+    <div class="order-card-foot">
+      <select class="order-status-select" data-id="${order.id}">
+        <option value="new"       ${order.status==='new'?'selected':''}>🆕 New Order</option>
+        <option value="working"   ${order.status==='working'?'selected':''}>⚙️ Working on Order</option>
+        <option value="ready"     ${order.status==='ready'?'selected':''}>✅ Order Ready</option>
+        <option value="completed" ${order.status==='completed'?'selected':''}>✔ Completed</option>
+      </select>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="wa-customer-btn">💬 WhatsApp</button>
+        <span class="order-phone">📱 ${order.phone}</span>
+      </div>
+    </div>`;
+
+  const sel = card.querySelector('.order-status-select');
+  sel.addEventListener('change', () => {
+    const newStatus = sel.value;
+    const o = STATE.orders.find(x => x.id === sel.dataset.id);
+    if (!o) return;
+    o.status = newStatus;
+    if (newStatus === 'ready') o.readyAt = Date.now();
+    saveOrders();
+    // Also update Firebase directly
+    if (db) db.ref('orders/' + o.id).update({ status: newStatus, readyAt: o.readyAt || null });
+    card.className = `order-card ${newStatus}`;
+    card.querySelector('.new-badge')?.remove();
+    if (STATE.newOrders > 0) { STATE.newOrders = Math.max(0, STATE.newOrders - 1); updateNewOrderBadge(); }
+  });
+
+  // WhatsApp button for customer
+  const waBtn = card.querySelector('.wa-customer-btn');
+  if (waBtn) {
+    waBtn.addEventListener('click', () => {
+      const o = STATE.orders.find(x => x.id === order.id);
+      const msg = encodeURIComponent(
+        `☕ Hi ${o.name}! Your Steam & Story order *${o.id}* is ready for pickup! 🎉`
+      );
+      window.open(`https://wa.me/91${o.phone}?text=${msg}`, '_blank');
+    });
+  }
+
+  if (isNew) {
+    card.addEventListener('click', () => {
+      const o = STATE.orders.find(x => x.id === order.id);
+      if (o && o.status === 'new') {
+        o.status = 'working'; sel.value = 'working';
+        card.className = 'order-card working';
+        card.querySelector('.new-badge')?.remove();
+        saveOrders();
+        STATE.newOrders = Math.max(0, STATE.newOrders - 1);
+        updateNewOrderBadge();
+      }
+    });
+  }
+  return card;
+}
+
+function initAdminOrders() {
+  $('#clearCompletedBtn').addEventListener('click', () => {
+    const completed = STATE.orders.filter(o => o.status === 'completed');
+    STATE.orders = STATE.orders.filter(o => o.status !== 'completed');
+    saveOrders();
+    // Also remove from Firebase
+    if (db) {
+      completed.forEach(o => db.ref('orders/' + o.id).remove().catch(()=>{}));
+    }
+    renderAdminOrders();
+  });
+}
+
+/* ── 12. Admin: Inventory ───────────────────────────────── */
+function initAdminInventoryGrid() {
+  MENU.forEach(cat => cat.items.forEach(item => {
+    if (STATE.inventory[item.id] === undefined) STATE.inventory[item.id] = true;
+  }));
+  saveInventory();
+}
+
+function renderInventoryGrid() {
+  const grid = $('#inventoryGrid');
+  grid.innerHTML = '';
+  MENU.forEach(cat => {
+    const section    = el('div', 'inv-category');
+    section.innerHTML = `<p class="inv-cat-title">${cat.icon} ${cat.name}</p>`;
+    const itemsWrap  = el('div', 'inv-items');
+    cat.items.forEach(item => {
+      const inStock = STATE.inventory[item.id] !== false;
+      const row     = el('div', 'inv-item');
+      row.innerHTML = `
+        <div>
+          <p class="inv-item-name">${item.emoji} ${item.name}</p>
+          <p class="inv-item-price">₹${item.price}</p>
+        </div>
+        <button class="inv-toggle ${inStock ? 'on' : ''}" data-id="${item.id}" title="${inStock ? 'Available' : 'Out of Stock'}"></button>`;
+      const toggle = row.querySelector('.inv-toggle');
+      toggle.addEventListener('click', () => {
+        const current = STATE.inventory[item.id] !== false;
+        STATE.inventory[item.id] = !current;
+        toggle.classList.toggle('on', !current);
+        toggle.title = !current ? 'Available' : 'Out of Stock';
+        saveInventory();
+        renderMenuGrid(STATE.activeCat);
+      });
+      itemsWrap.appendChild(row);
+    });
+    section.appendChild(itemsWrap);
+    grid.appendChild(section);
+  });
+}
+
+/* ── 13. Admin: Reports ─────────────────────────────────── */
+function initReports() {
+  const rangeEl = $('#reportRange');
+  rangeEl.addEventListener('change', () => {
+    $('#customDateWrap').classList.toggle('hidden', rangeEl.value !== 'custom');
+  });
+  $('#runReportBtn').addEventListener('click', generateReport);
+  const today = todayStr();
+  $('#dateFrom').value = today;
+  $('#dateTo').value   = today;
+}
+
+function generateReport() {
+  const range = $('#reportRange').value;
+  const now   = new Date();
+  let from, to;
+
+  if (range === 'today') {
+    from = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0).getTime();
+    to   = now.getTime();
+  } else if (range === 'yesterday') {
+    const y = new Date(now); y.setDate(y.getDate()-1);
+    from = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 0,0,0).getTime();
+    to   = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 23,59,59).getTime();
+  } else if (range === '7days') {
+    from = now.getTime() - 7*24*60*60*1000; to = now.getTime();
+  } else if (range === '30days') {
+    from = now.getTime() - 30*24*60*60*1000; to = now.getTime();
+  } else {
+    const f = $('#dateFrom').value, t = $('#dateTo').value;
+    if (!f || !t) return;
+    from = new Date(f).getTime();
+    to   = new Date(t + 'T23:59:59').getTime();
+  }
+
+  const filtered = STATE.orders.filter(o => o.placedAt >= from && o.placedAt <= to);
+  const revenue  = filtered.reduce((s,o) => s+o.total, 0);
+  const avg      = filtered.length ? Math.round(revenue / filtered.length) : 0;
+
+  $('#kpiOrders').textContent  = filtered.length;
+  $('#kpiRevenue').textContent = '₹' + revenue.toLocaleString();
+  $('#kpiAvg').textContent     = '₹' + avg.toLocaleString();
+
+  const list = $('#reportList');
+  if (!filtered.length) { list.innerHTML = '<p style="color:var(--c-mid);text-align:center;padding:24px">No orders in this period.</p>'; return; }
+  list.innerHTML = '';
+  filtered.forEach(o => {
+    const row = el('div', 'report-order-row');
+    row.innerHTML = `<span><strong>${o.id}</strong> · ${o.name}</span><span>${formatDate(o.placedAt)} ${formatTime(o.placedAt)}</span><span style="color:var(--c-gold);font-weight:600">₹${o.total.toLocaleString()}</span>`;
+    list.appendChild(row);
+  });
+}
+
+/* ── 14. Admin: Shop Controls ───────────────────────────── */
+function initShopControls() {
+  $$('.status-btn[data-s]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      STATE.shopStatus = btn.dataset.s;
+      saveShop();
+      updateShopStatusButtons();
+      updateCustomerShopBanner();
+    });
+  });
+
+  $('#setReopenBtn').addEventListener('click', () => {
+    const d = $('#reopenDate').value;
+    const t = $('#reopenTime').value;
+    if (!d || !t) { $('#reopenNote').textContent = 'Please select both date and time.'; return; }
+    STATE.reopenAt = d + 'T' + t;
+    saveReopen();
+    $('#reopenNote').textContent = `Scheduled to reopen on ${formatDate(new Date(STATE.reopenAt).getTime())} at ${t}`;
+  });
+}
+
+function updateShopStatusButtons() {
+  $$('.status-btn[data-s]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.s === STATE.shopStatus);
+  });
+  const labels = { open: 'Open', break: 'On Break', closed: 'Closed Today' };
+  const statusEl = $('#currStatusTxt');
+  if (statusEl) statusEl.textContent = labels[STATE.shopStatus] || 'Open';
+}
+
+function updateCustomerShopBanner() {
+  const banner = $('#shopBanner');
+  if (!banner) return;
+  if (STATE.shopStatus === 'open') {
+    banner.classList.add('hidden');
+  } else {
+    banner.classList.remove('hidden');
+    if (STATE.shopStatus === 'closed') {
+      banner.className = 'shop-banner closed';
+      banner.textContent = '🔴 We are closed today. See you tomorrow!';
+    } else {
+      banner.className = 'shop-banner break';
+      banner.textContent = '⏸ We are on a short break. Back soon!';
+    }
+  }
+}
+
+/* ── 14b. Admin: Settings / Change Password ─────────────── */
+function initSettings() {
+  $('#changePassBtn').addEventListener('click', () => {
+    const currPass    = $('#currPass').value;
+    const newPass     = $('#newPass').value;
+    const confirmPass = $('#confirmPass').value;
+    const msgEl       = $('#passMsg');
+
+    msgEl.className = 'hidden';
+    msgEl.textContent = '';
+
+    if (currPass !== STATE.adminCreds.pass) {
+      msgEl.className   = 'settings-error';
+      msgEl.textContent = '⚠ Current password is incorrect.';
+      return;
+    }
+    if (newPass.length < 8) {
+      msgEl.className   = 'settings-error';
+      msgEl.textContent = '⚠ New password must be at least 8 characters.';
+      return;
+    }
+    if (!/[0-9]/.test(newPass)) {
+      msgEl.className   = 'settings-error';
+      msgEl.textContent = '⚠ New password must contain at least one number.';
+      return;
+    }
+    if (!/[^a-zA-Z0-9]/.test(newPass)) {
+      msgEl.className   = 'settings-error';
+      msgEl.textContent = '⚠ New password must contain at least one special character.';
+      return;
+    }
+    if (newPass !== confirmPass) {
+      msgEl.className   = 'settings-error';
+      msgEl.textContent = '⚠ New passwords do not match.';
+      return;
+    }
+
+    STATE.adminCreds.pass = newPass;
+    saveAdminCreds();
+    $('#currPass').value    = '';
+    $('#newPass').value     = '';
+    $('#confirmPass').value = '';
+    msgEl.className   = 'settings-success';
+    msgEl.textContent = '✅ Password updated successfully! Use it next time you log in.';
+  });
+}
+
+/* ── 15. Notifications & Audio ──────────────────────────── */
+function playChime() {
+  try {
+    if (!STATE.audioCtx) STATE.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx   = STATE.audioCtx;
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((freq, i) => {
+      const t    = ctx.currentTime + i * 0.18;
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.28, t + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.65);
+    });
+  } catch(e) { /* Audio not supported */ }
+}
+
+function notifyAdminNewOrder(order) {
+  saveOrders(); // saves to localStorage + Firebase
+  STATE.newOrders++;
+  updateNewOrderBadge();
+  renderAdminOrders();
+  playChime();
+
+  // Send WhatsApp notification to admin
+  const itemsList = order.items.map(i => `  • ${i.qty}x ${i.name} — ₹${i.price * i.qty}`).join('\n');
+  const waMsg = encodeURIComponent(
+    `🆕 *New Order — Steam & Story*\n\n` +
+    `*Order ID:* ${order.id}\n` +
+    `*Customer:* ${order.name}\n` +
+    `*Phone:* +91${order.phone}\n\n` +
+    `*Items:*\n${itemsList}\n\n` +
+    `*Total:* ₹${order.total}\n` +
+    `*Prep Time:* ${order.prepMin}–${order.prepMax} mins\n` +
+    `*Placed At:* ${new Date(order.placedAt).toLocaleTimeString('en-IN')}`
+  );
+  window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waMsg}`, '_blank');
+}
+
+/* ── 16. Shop Status (Customer Side) ────────────────────── */
+function initShopStatus() {
+  updateCustomerShopBanner();
+}
+
+/* ── 17. Init ───────────────────────────────────────────── */
+function init() {
+  STATE.inventory  = JSON.parse(localStorage.getItem('ss_inventory') || '{}');
+  STATE.shopStatus = localStorage.getItem('ss_shopStatus') || 'open';
+
+  // Restore saved credentials if available
+  const savedCreds = JSON.parse(localStorage.getItem('ss_adminCreds') || 'null');
+  if (savedCreds) STATE.adminCreds = savedCreds;
+
+  // Load orders: try Firebase first, fall back to localStorage
+  if (db) {
+    db.ref('orders').once('value').then(snap => {
+      const data = snap.val();
+      STATE.orders = data
+        ? Object.values(data).sort((a, b) => b.placedAt - a.placedAt)
+        : JSON.parse(localStorage.getItem('ss_orders') || '[]');
+      localStorage.setItem('ss_orders', JSON.stringify(STATE.orders));
+      renderAdminOrders();
+    }).catch(() => {
+      STATE.orders = JSON.parse(localStorage.getItem('ss_orders') || '[]');
+    });
+  } else {
+    STATE.orders = JSON.parse(localStorage.getItem('ss_orders') || '[]');
+  }
+
+  initAdminInventoryGrid();
+  initNav();
+  initMenu();
+  initCart();
+  initCheckout();
+  initWaitingScreen();
+  initAdmin();
+  initAdminOrders();
+  initReports();
+  initShopControls();
+  initSettings();
+  initShopStatus();
+  updateCartUI();
+
+  // Navbar active link on scroll
+  const sections = ['hero','menu','about'];
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        $$('.nav-links a').forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--c-espresso)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(id => { const s = document.getElementById(id); if(s) observer.observe(s); });
+
+  // Staggered menu card animation
+  const menuObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp .5s ease-out forwards';
+        menuObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const menuGrid = $('#menuGrid');
+  const mutObs   = new MutationObserver(() => {
+    $$('.menu-card').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.animationDelay = (i * 0.06) + 's';
+      menuObserver.observe(card);
+    });
+  });
+  mutObs.observe(menuGrid, { childList: true });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
